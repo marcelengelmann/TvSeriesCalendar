@@ -1,0 +1,37 @@
+﻿<Application x:Class="TvSeriesCalendar.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TvSeriesCalendar"
+             xmlns:vm="clr-namespace:TvSeriesCalendar.ViewModels"
+             xmlns:v="clr-namespace:TvSeriesCalendar.Views"
+             xmlns:vc="clr-namespace:TvSeriesCalendar.ValueConverter"
+             StartupUri="Views/StartUpView.xaml">
+    <Application.Resources>
+        <!--Binding ViewModels to Views-->
+        <DataTemplate DataType="{x:Type vm:SeriesViewModel}">
+            <v:SeriesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SearchViewModel}">
+            <v:SearchView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <v:SettingsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AboutViewModel}">
+            <v:AboutView />
+        </DataTemplate>
+        <!--Value Converters-->
+        <vc:PathToImageConverter x:Key="PathToImage"/>
+        <vc:DateTimeToDateConverter x:Key="DateTimeToDate"/>
+        <vc:SelectedSeriesToVisibilityConverter x:Key="SelectedSeriesToVisibility"/>
+        <vc:SearchBoxWatermarkVisibilityConverter x:Key="WatermarkVisibility"/>
+        <vc:PageNumberToVisibilityConverter x:Key="PageVisibility"/>
+        <vc:StatusToBorderConverter x:Key="StatusToBorder"/>
+        <!--Images-->
+        <BitmapImage x:Key="defaultSeriesImage" UriSource="/Resources/defaultSeries.png" />
+        <!--Styles-->
+        <Style x:Key="NavigationButton" TargetType="Button">
+            <Setter Property="Background" Value="DarkGray" />
+        </Style>
+    </Application.Resources>
+</Application>

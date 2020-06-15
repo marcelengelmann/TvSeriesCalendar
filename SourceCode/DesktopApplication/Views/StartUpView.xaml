@@ -1,0 +1,27 @@
+﻿<Window x:Class="TvSeriesCalendar.Views.StartUpView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TvSeriesCalendar.Views"
+        xmlns:vm="clr-namespace:TvSeriesCalendar.ViewModels"
+        xmlns:uc="clr-namespace:TvSeriesCalendar.UtilityClasses"
+        mc:Ignorable="d"
+        Title="TvSeriesCalendar" Height="200" Width="400"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:StartUpViewModel/>
+    </Window.DataContext>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <uc:GifImage Grid.Row="0" GifSource="/TvSeriesCalendar;component/Resources/loading_whiteBG.gif" AutoStart="True"/>
+        <TextBlock Grid.Row="1" Text="{Binding StatusText}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <ProgressBar Grid.Row="2" Value="{Binding DownloadProgress}"/>
+    </Grid>
+</Window>

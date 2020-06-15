@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <ComponentGroup Id="ProductComponents">
+          
+          <ComponentRef Id="MainAppShortcut"/>
+        
+        </ComponentGroup>
+      
+        <DirectoryRef Id="INSTALLFOLDER" FileSource="..\DesktopApplication\bin\$(var.Platform)\Release\">
+          
+          <Component Id="MainAppShortcut" Guid="{4097F2F4-5128-4A57-BBCF-7E089BB6BE5F}">
+
+            <Shortcut Id="MainAppShortcut" 
+                      Name="!(loc.ProductName)"
+                      Target="[INSTALLFOLDER]TvSeriesCalendar.exe"
+                      Directory="StartMenuFolder"
+                      WorkingDirectory="INSTALLFOLDER"
+                      Icon="AppIcon"
+                      />
+            <!--Unique key for this component-->
+            <RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\!(loc.ProductName)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes"/>
+            
+            <!--Remove Startmenu folder at uninstallation-->
+            <RemoveFolder Id="RemoveStartMenuFolder" Directory="StartMenuFolder" On="uninstall"/>
+            
+          </Component>
+        </DirectoryRef>
+    </Fragment>
+</Wix>

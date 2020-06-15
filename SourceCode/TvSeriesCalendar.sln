@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvSeriesCalendar", "DesktopApplication\TvSeriesCalendar.csproj", "{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixproj", "{487668E6-9CC2-47B3-A664-53F4C6751CCD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}.Debug|x64.ActiveCfg = Debug|x64
+		{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}.Debug|x64.Build.0 = Debug|x64
+		{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}.Debug|x86.ActiveCfg = Debug|x86
+		{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}.Debug|x86.Build.0 = Debug|x86
+		{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}.Release|x64.ActiveCfg = Release|x64
+		{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}.Release|x64.Build.0 = Release|x64
+		{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}.Release|x86.ActiveCfg = Release|x86
+		{2941EEFC-007C-4ABA-A1E4-A2480CAACE96}.Release|x86.Build.0 = Release|x86
+		{487668E6-9CC2-47B3-A664-53F4C6751CCD}.Debug|x64.ActiveCfg = Debug|x64
+		{487668E6-9CC2-47B3-A664-53F4C6751CCD}.Debug|x86.ActiveCfg = Debug|x86
+		{487668E6-9CC2-47B3-A664-53F4C6751CCD}.Debug|x86.Build.0 = Debug|x86
+		{487668E6-9CC2-47B3-A664-53F4C6751CCD}.Release|x64.ActiveCfg = Release|x64
+		{487668E6-9CC2-47B3-A664-53F4C6751CCD}.Release|x64.Build.0 = Release|x64
+		{487668E6-9CC2-47B3-A664-53F4C6751CCD}.Release|x86.ActiveCfg = Release|x86
+		{487668E6-9CC2-47B3-A664-53F4C6751CCD}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A66AC54-1C0E-4CC0-85BE-AC8CF400CBBF}
+	EndGlobalSection
+EndGlobal

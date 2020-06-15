@@ -1,0 +1,15 @@
+F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalenderDesktopApplication\Setup\bin\Release\en-us\Setup.msi
+F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalenderDesktopApplication\Setup\bin\Release\en-us\Setup.wixpdb
+F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalenderDesktopApplication\Setup\bin\x86\Release\en-us\TvSeriesCalenderSetup-x86.msi
+obj\Release\ComponentsGenerated.wixobj
+obj\Release\ManualComponents.wixobj
+obj\Release\Directories.wixobj
+obj\Release\Product.wixobj
+obj\Release\Setup.wixproj.BindContentsFileListen-us.txt
+obj\Release\Setup.wixproj.BindOutputsFileListen-us.txt
+obj\Release\Setup.wixproj.BindBuiltOutputsFileListen-us.txt
+F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalenderDesktopApplication\Setup\bin\Release\x86\de-de\TvSeriesCalendarSetup-x86.msi
+F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalenderDesktopApplication\Setup\bin\Release\x86\en-us\TvSeriesCalendarSetup-x86.msi
+obj\Release\Setup.wixproj.BindContentsFileListde-de.txt
+obj\Release\Setup.wixproj.BindOutputsFileListde-de.txt
+obj\Release\Setup.wixproj.BindBuiltOutputsFileListde-de.txt

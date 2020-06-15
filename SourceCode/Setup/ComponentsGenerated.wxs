@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmpBC4FC00A26E7D32479D42D3411317FC5" Guid="{1507B3DB-30ED-472B-960D-B2EF9F44415D}">
+                <File Id="fil90A8AAD9FC612906D405476D61CEA3F4" KeyPath="yes" Source="$(var.BasePath)\Newtonsoft.Json.dll" />
+            </Component>
+            <Component Id="cmp125C379E185231EFADA4CB4301BD0A9E" Guid="{0CCFCC27-E50E-49E5-87B5-45F6B2A9D457}">
+                <File Id="fil3A2F44A7730E98D18E0948B3261DFABD" KeyPath="yes" Source="$(var.BasePath)\Newtonsoft.Json.xml" />
+            </Component>
+            <Component Id="cmp444538202D45DE3F59AA31002C700A2F" Guid="{B9A5DBFD-A817-45AD-926B-F80C20F871F5}">
+                <File Id="fil7C8D6482FE6CC3F247D2D051D3648AC4" KeyPath="yes" Source="$(var.BasePath)\ThirdPartyNotices.txt" />
+            </Component>
+            <Component Id="cmpA5355603680DBD8908CE0DBE0E8F7719" Guid="{2E20C46D-02C6-4816-975D-02216453F0F6}">
+                <File Id="fil2F618FA081685BCBDCE2C6BE117DD781" KeyPath="yes" Source="$(var.BasePath)\TMDbLib.dll" />
+            </Component>
+            <Component Id="cmpCBF4FB5E9A001E02124A91A3A1A092D0" Guid="{9216038E-1DA1-4A9C-95AC-AE6A63AB8CC7}">
+                <File Id="filD4B10FF298070BF820E0F9D1F4998CAD" KeyPath="yes" Source="$(var.BasePath)\TvSeriesCalendar.exe" />
+            </Component>
+            <Component Id="cmp63691DB9CE699276F93604BD9A49564C" Guid="{58D8D7D4-74F2-4DDE-ACDB-5331DB62E6BA}">
+                <File Id="fil90AE57155F87FE8FE33CC0268BC85771" KeyPath="yes" Source="$(var.BasePath)\TvSeriesCalendar.exe.config" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="ReleasedComponents">
+            <ComponentRef Id="cmpBC4FC00A26E7D32479D42D3411317FC5" />
+            <ComponentRef Id="cmp125C379E185231EFADA4CB4301BD0A9E" />
+            <ComponentRef Id="cmp444538202D45DE3F59AA31002C700A2F" />
+            <ComponentRef Id="cmpA5355603680DBD8908CE0DBE0E8F7719" />
+            <ComponentRef Id="cmpCBF4FB5E9A001E02124A91A3A1A092D0" />
+            <ComponentRef Id="cmp63691DB9CE699276F93604BD9A49564C" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

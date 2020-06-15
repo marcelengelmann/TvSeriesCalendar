@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" InitialTargets="EnsureWixToolsetInstalled" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProductVersion>3.10</ProductVersion>
+    <ProjectGuid>487668e6-9cc2-47b3-a664-53f4c6751ccd</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>TvSeriesCalendarSetup-$(Platform)</OutputName>
+    <OutputType>Package</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <Cultures>en-US;de-DE;</Cultures>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <Cultures>en-US;de-DE;</Cultures>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ComponentsGenerated.wxs" />
+    <Compile Include="ManualComponents.wxs" />
+    <Compile Include="Directories.wxs" />
+    <Compile Include="Product.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DesktopApplication\TvSeriesCalendar.csproj">
+      <Name>TvSeriesCalendar</Name>
+      <Project>{2941eefc-007c-4aba-a1e4-a2480caace96}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="german.wxl" />
+    <EmbeddedResource Include="english.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+  <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+    <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
+  </Target>
+  <Target Name="BeforeBuild">
+    <!--Get assembly Version of main Project-->
+    <GetAssemblyIdentity AssemblyFiles="..\DesktopApplication\bin\$(Platform)\Release\TvSeriesCalendar.exe">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <!--Define Variables-->
+    <PropertyGroup>
+      <DefineConstants>BuildVersion=%(AssemblyVersion.Version);BasePath=..\DesktopApplication\bin\$(Platform)\Release\</DefineConstants>
+    </PropertyGroup>
+    <HeatDirectory OutputFile="ComponentsGenerated.wxs" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="ReleasedComponents" SuppressCom="true" Directory="..\DesktopApplication\bin\$(Platform)\Release\" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
+  </Target>
+  <Target Name="AfterBuild">
+    <!-- Get assembly Version of main Project -->
+    <GetAssemblyIdentity AssemblyFiles="..\DesktopApplication\bin\$(Platform)\Release\TvSeriesCalendar.exe">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <CallTarget Condition="%(CultureGroup.OutputFolder)=='en-US\'" Targets="EnglishFiles"/>
+    <CallTarget Condition="%(CultureGroup.OutputFolder)=='de-DE\'" Targets="GermanFiles"/>
+  </Target>
+  <Target Name="GermanFiles">
+    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
+    <Exec Command="if not exist &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot; mkdir &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+    <Exec Command="ren &quot;$(TargetDir)\de-DE\$(TargetName).msi&quot; &quot;TvSeriesCalendar-%(AssemblyVersion.Version)-$(Platform)_de.msi" />
+    <Exec Command="move &quot;$(TargetDir)\de-DE\*&quot; &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+  </Target>
+  <Target Name="EnglishFiles">
+    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
+    <Exec Command="if not exist &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot; mkdir &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+    <Exec Command="ren &quot;$(TargetDir)\en-US\$(TargetName).msi&quot; &quot;TvSeriesCalendar-%(AssemblyVersion.Version)-$(Platform)_en.msi" />
+    <Exec Command="move &quot;$(TargetDir)\en-US\*&quot; &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent />
+  </PropertyGroup>
+</Project>

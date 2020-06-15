@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <!--Product unique ID per Platform-->
+  <?if $(var.Platform) = x64 ?>
+		<?define ProductCode = "{0F7B2FCC-80A8-4B8E-B1F8-F78F9E43CA2C}"?>
+  <?else?>
+		<?define ProductCode = "{126A6C93-F21F-4DAA-920D-208602D8433A}"?>
+	<?endif?>
+    
+  <!--Fixed Upgrade ID >> Never change this!-->
+  <?define UpgradeCode = {1918E783-2E05-45C4-AF31-373DD2E83501} ?>
+    
+  <!--Define main product-->
+	<Product Id="$(var.ProductCode)"
+           Name="!(loc.InstallerName_$(var.Platform))"
+           Language="!(loc.Language)"
+           Version="$(var.BuildVersion)"
+           Manufacturer="!(loc.Company)"
+           UpgradeCode="$(var.UpgradeCode)">
+    
+    <!--Provide package details-->
+		<Package InstallerVersion="200"
+             Compressed="yes" 
+             InstallScope="perMachine"
+						 Platform="$(var.Platform)"
+             Manufacturer="!(loc.Company)"
+             Description="!(loc.Description)"
+             Keywords="!(loc.Keywords)"
+             Comments="!(loc.Comments)"
+             Languages="!(loc.Language)"/>
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
+    
+    <!--include .cab file into .msi file-->
+		<MediaTemplate 
+      EmbedCab="yes"
+      />
+    <!--Define Installer App Icon-->
+    <Icon Id="AppIcon" SourceFile="$(var.TvSeriesCalendar.ProjectDir)\TvSeriesCalendar.ico"/>
+    
+    <!--Use Icon-->
+    <Property Id="ARPPRODUCTICON">AppIcon</Property>
+    <Property Id="ARPPURLINFOABOUT">https://github.com/Death-Truction/TvSeriesCalendar</Property>
+
+    <UIRef Id="WixUI_Minimal"/>
+
+    <!--Define components etc.-->
+		<Feature Id="ProductFeature" Title="TvSeriesCalendar" Level="1">
+			<ComponentGroupRef Id="ReleasedComponents" />
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+</Wix>
