@@ -7,6 +7,7 @@ Do Not Translate or Localize
 2.	JamesNK/Newtonsoft.Json version 12.0.3 (https://github.com/JamesNK/Newtonsoft.Json)
 3.	TheMovieDatabase API (https://www.themoviedb.org/)
 4.  wixtoolset/wix3 (https://github.com/wixtoolset/wix3)
+5.  diub/TaskScheduler Source Code (https://dotnet-snippets.de/snippet/windows-aufgabenplaner-taskscheduler-benutzen/15191)
 
 
 LordMike/TMDbLib NOTICES AND INFORMATION BEGIN HERE
