@@ -75,18 +75,18 @@ namespace TvSeriesCalendar.ViewModels
             InitializeRequiredData();
             if (NextMainWindow == "main")
             {
-                string version = CheckForApplicationUpdates.NewVersionExists();
+                string version = ApplicationUpdater.NewVersionExists();
                 if (version != "")
                 {
-                    StatusText = "Updating Application";
-                    await CheckForApplicationUpdates.Update(version, progressUpdate);
+                    StatusText = "Downloading Updates";
+                    await ApplicationUpdater.Update(version, progressUpdate);
                     RunOnUiThread(CurrentMainWindow.Close);
                     RunOnUiThread(Application.Current.Shutdown);
                 }
                 else
                 {
                     StatusText = "Updating Tv Series";
-                    CheckForTvSeriesUpdates.Update(_localDataService, _onlineDataService);
+                    TvSeriesUpdater.Update(_localDataService, _onlineDataService);
                 }
             }
             await _onlineDataService.FetchTMDbConfig();

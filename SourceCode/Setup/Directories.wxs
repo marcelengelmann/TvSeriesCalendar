@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
-    
-    <Directory Id="TARGETDIR" Name="SourceDir">     
+    <Directory Id="TARGETDIR" Name="SourceDir">
       
-      <!--Start Menu-->
+    <!--Start Menu-->
       <Directory Id="ProgramMenuFolder">
         <Directory Id="StartMenuFolder" Name="!(loc.ProductName)" />
       </Directory>     
       
-
-      <?if $(var.Platform) = x64 ?>
-        <Directory Id="ProgramFiles64Folder">        
-          <Directory Id="INSTALLFOLDER" Name="!(loc.ProductName)" />        
-        </Directory>
-      <?else?>
-        <Directory Id="ProgramFilesFolder">
-          <Directory Id="INSTALLFOLDER" Name="!(loc.ProductName)" />
-        </Directory>
-      <?endif?>
-      
+      <!--Default Location-->
+        <?if $(var.Platform) = x64 ?>
+          <Directory Id="ProgramFiles64Folder">        
+            <Directory Id="INSTALLFOLDER" Name="!(loc.ProductName)" />        
+          </Directory>
+        <?else?>
+          <Directory Id="ProgramFilesFolder">
+            <Directory Id="INSTALLFOLDER" Name="!(loc.ProductName)" />
+          </Directory>
+        <?endif?>
+      <!--Desktop-->
+      <Directory Id="DesktopFolder" Name="Desktop">
+        <Directory Id="DESKTOPFOLDER"/>
+      </Directory>
+      <Directory Id="Directory_Certificates" Name="Certificates">
+        <Directory Id="CERTIFICATES"/>
+      </Directory>
+      <Directory Id="RegEntries" Name="RegestrieEntries">
+        <Directory Id="REGESTRIEENTRIES"/>
+      </Directory>
     </Directory>
-    
-  </Fragment>
+    <SetDirectory Id="INSTALLFOLDER" Value="[REGINSTALLDIR]">REGINSTALLDIR</SetDirectory>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />  
+    </Fragment>
 </Wix>

@@ -5,10 +5,16 @@
 	<String Id="InstallerName_x64">TvSeriesCalendar (64bit)</String>
 	<String Id="ProductName">TvSeriesCalendar</String>
 	<String Id="Language">1033</String>
+	<String Id="LanguageName">en</String>
   <String Id="Company">DeathTruction</String>
   <String Id="Description">Describe your Product</String>
   <String Id="Keywords">dotnet,application,installer</String>
   <String Id="Comments">Additional Comments</String>
   <String Id="DowngradeErrorMessage">A newer version of TvSeriesCalendar is already installed.</String>
+  <String Id="CreateDesktopShortcutText">Create a desktop shortcut</String>
+  <String Id="InstallCertificateText">Install Self-Signed Certificate</String>
+  <String Id="ReadFirst">Read First!</String>
+  <String Id="CustomDialogDescription">Choose additional features, that should be installed.</String>
+  <String Id="CustomDialogTitle">Additional Features</String>
   
 </WixLocalization>

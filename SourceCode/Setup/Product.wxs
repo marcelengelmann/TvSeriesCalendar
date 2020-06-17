@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-
-  <!--Product unique ID per Platform-->
-  <?if $(var.Platform) = x64 ?>
-		<?define ProductCode = "{0F7B2FCC-80A8-4B8E-B1F8-F78F9E43CA2C}"?>
-  <?else?>
-		<?define ProductCode = "{126A6C93-F21F-4DAA-920D-208602D8433A}"?>
-	<?endif?>
-    
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">    
   <!--Fixed Upgrade ID >> Never change this!-->
   <?define UpgradeCode = {1918E783-2E05-45C4-AF31-373DD2E83501} ?>
     
   <!--Define main product-->
-	<Product Id="$(var.ProductCode)"
+	<Product Id="*"
            Name="!(loc.InstallerName_$(var.Platform))"
            Language="!(loc.Language)"
            Version="$(var.BuildVersion)"
@@ -41,13 +33,32 @@
     <!--Use Icon-->
     <Property Id="ARPPRODUCTICON">AppIcon</Property>
     <Property Id="ARPPURLINFOABOUT">https://github.com/Death-Truction/TvSeriesCalendar</Property>
+    <Property Id="REGINSTALLDIR">
+      <RegistrySearch Id='InstallationPath' 
+                      Type='raw'
+                      Root='HKLM'
+                      Key="SOFTWARE\DeathTruction\!(loc.ProductName)"
+                      Name='InstallationPath' />
+    </Property>
 
-    <UIRef Id="WixUI_Minimal"/>
+    <WixVariable Id="WixUILicenseRtf" Value="gpl-3.0.rtf" />
+    <UIRef Id="MyInstallDir_UI" />
+
+    <!-- Binary for the certificate-->
+    <Binary
+      Id="TvSeriesCalendar.Binary"
+      SourceFile="$(var.ProjectDir)Certificate.der" />
 
     <!--Define components etc.-->
 		<Feature Id="ProductFeature" Title="TvSeriesCalendar" Level="1">
 			<ComponentGroupRef Id="ReleasedComponents" />
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
+
+    <InstallExecuteSequence>
+      <Custom Action='RemoveFilesAction' After='InstallFiles'>
+        (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")
+      </Custom>
+    </InstallExecuteSequence>
 	</Product>
 </Wix>

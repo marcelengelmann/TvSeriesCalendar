@@ -99,8 +99,7 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Certificate.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -172,8 +171,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\CheckForTvSeriesUpdates.cs" />
-    <Compile Include="Services\CheckForApplicationUpdates.cs" />
+    <Compile Include="Services\TvSeriesUpdater.cs" />
+    <Compile Include="Services\ApplicationUpdater.cs" />
     <Compile Include="Services\LocalDataService.cs" />
     <Compile Include="UtilityClasses\GifImage.cs" />
     <Compile Include="UtilityClasses\ObservableObject.cs" />
@@ -285,6 +284,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Certificate.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -361,7 +361,6 @@
       $(PostBuildEventDependsOn);
       PostBuildMacros;
     </PostBuildEventDependsOn>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release "$(ProjectDir)signExe.bat" "$(ProjectDir)$(OutDir)$(TargetName)$(TargetExt)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

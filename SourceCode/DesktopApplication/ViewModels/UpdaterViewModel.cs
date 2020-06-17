@@ -76,7 +76,7 @@ namespace TvSeriesCalendar.ViewModels
          */
         private void UpdateTvSeries()
         {
-            (_updatedSeries, _todayReleasedSeasonSeries) = CheckForTvSeriesUpdates.Update(_localDataService, _onlineDataService);
+            (_updatedSeries, _todayReleasedSeasonSeries) = TvSeriesUpdater.Update(_localDataService, _onlineDataService);
             if ((_updatedSeries.Count > 0 || _todayReleasedSeasonSeries.Count > 0))
                 notify();
             else 

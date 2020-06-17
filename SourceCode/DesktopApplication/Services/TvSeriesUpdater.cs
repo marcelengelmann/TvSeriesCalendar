@@ -8,7 +8,7 @@ using TvSeriesCalendar.Models;
 
 namespace TvSeriesCalendar.Services
 {
-    class CheckForTvSeriesUpdates
+    class TvSeriesUpdater
     {
         public static (List<TvSeries> _updatedSeries, List<TvSeries> _todayReleasedSeasonSeries) Update(LocalDataService _localDataService, OnlineDataService _onlineDataService)
         {

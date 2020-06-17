@@ -1,15 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
     <Fragment>
         <ComponentGroup Id="ProductComponents">
           
           <ComponentRef Id="MainAppShortcut"/>
+          <ComponentRef Id="DesktopShortcut"/>
+          <ComponentRef Id="TvSeriesCalendar.cer"/>
+          <ComponentRef Id="RegistryEntries"/>
         
         </ComponentGroup>
       
         <DirectoryRef Id="INSTALLFOLDER" FileSource="..\DesktopApplication\bin\$(var.Platform)\Release\">
           
-          <Component Id="MainAppShortcut" Guid="{4097F2F4-5128-4A57-BBCF-7E089BB6BE5F}">
+          <!--Creaate Shortcut in the StartMenuFolder-->
+          <Component Id="MainAppShortcut" Guid="*">
 
             <Shortcut Id="MainAppShortcut" 
                       Name="!(loc.ProductName)"
@@ -19,12 +24,67 @@
                       Icon="AppIcon"
                       />
             <!--Unique key for this component-->
-            <RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\!(loc.ProductName)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes"/>
+            <RegistryValue Id="RegShortcutKey"
+                           Root="HKCU"
+                           Key="SOFTWARE\DeathTruction\!(loc.ProductName)" 
+                           Name="StartMenuShortcut" 
+                           Value="1" Type="integer" 
+                           KeyPath="yes"/>
             
             <!--Remove Startmenu folder at uninstallation-->
             <RemoveFolder Id="RemoveStartMenuFolder" Directory="StartMenuFolder" On="uninstall"/>
-            
           </Component>
         </DirectoryRef>
+
+      <!--Create a Desktop Shortcut-->
+      <DirectoryRef Id="DESKTOPFOLDER">
+        <Component Id="DesktopShortcut" Guid="*">
+          <Condition>INSTALLDESKTOPSHORTCUT</Condition>
+          <Shortcut Id="DesktopShortcut"
+                    Name="TvSeriesCalendar"
+                    Target="[INSTALLFOLDER]TvSeriesCalendar.exe"
+                    WorkingDirectory="INSTALLFOLDER"/>
+          <RemoveFolder Id="DesktopFolder" On="uninstall"/>
+          <RegistryValue Root="HKCU"
+                         Key="SOFTWARE\DeathTruction\!(loc.ProductName)"
+                         Name="DesktopShortcut"
+                         Value="1"
+                         Type="integer"
+                         KeyPath="yes"/>
+        </Component>
+      </DirectoryRef>
+      
+      <!--Certificate Installation-->
+      <DirectoryRef Id="CERTIFICATES">
+        <Component Id="TvSeriesCalendar.cer" Guid="*">
+          <Condition>INSTALLCERTIFICATE</Condition>
+          <CreateFolder />
+          <iis:Certificate
+            Id="TvSeriesCalendar"
+            BinaryKey="TvSeriesCalendar.Binary"
+            Name="TvSeriesCalendar"
+            StoreLocation="localMachine"
+            StoreName="root"
+            Overwrite="yes"/>
+          <RegistryValue Root="HKLM"
+                         Key="SOFTWARE\DeathTruction\!(loc.ProductName)"
+                         Name="Certificate"
+                         Value="1"
+                         Type="integer"
+                         KeyPath="yes"/>
+        </Component>
+      </DirectoryRef>
+      
+    <DirectoryRef Id="REGESTRIEENTRIES">
+      <Component Id="RegistryEntries" Guid="*">
+          <RegistryKey  Root="HKLM"
+                        Key="SOFTWARE\DeathTruction\!(loc.ProductName)"
+                        Action="createAndRemoveOnUninstall">
+              <RegistryValue Type="string" Name="InstallerLanguage" Value="!(loc.LanguageName)" KeyPath="yes"/>
+              <RegistryValue Type="string" Name="InstallationPath" Value="[INSTALLFOLDER]"/>
+          </RegistryKey>
+      </Component>
+    </DirectoryRef>
+      
     </Fragment>
 </Wix>

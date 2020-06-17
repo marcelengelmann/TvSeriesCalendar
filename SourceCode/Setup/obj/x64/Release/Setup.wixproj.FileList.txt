@@ -12,3 +12,8 @@ F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalenderDesktopApplication
 obj\x64\Release\Setup.wixproj.BindContentsFileListde-de.txt
 obj\x64\Release\Setup.wixproj.BindOutputsFileListde-de.txt
 obj\x64\Release\Setup.wixproj.BindBuiltOutputsFileListde-de.txt
+F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\SourceCode\Setup\bin\Release\x64\en-US\TvSeriesCalendarSetup-x64.msi
+F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\SourceCode\Setup\bin\Release\x64\de-DE\TvSeriesCalendarSetup-x64.msi
+obj\x64\Release\MyInstallDir_UI.wixobj
+obj\x64\Release\MyCustomDlg.wixobj
+obj\x64\Release\RemoveFiles.wixobj

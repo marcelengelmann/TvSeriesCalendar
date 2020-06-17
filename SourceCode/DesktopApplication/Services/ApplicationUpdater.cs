@@ -11,10 +11,12 @@ using System.IO;
 using System.Diagnostics;
 using System.Windows;
 using System.Threading;
+using TMDbLib.Objects.Languages;
+using System.Reflection;
 
 namespace TvSeriesCalendar.Services
 {
-    class CheckForApplicationUpdates
+    class ApplicationUpdater
     {
         internal static string NewVersionExists()
         {
@@ -29,36 +31,31 @@ namespace TvSeriesCalendar.Services
 
         internal static async Task Update(string version, DownloadProgressChangedEventHandler progressUpdate)
         {
-            /*string configuration = "";
+            string configuration = "";
+            string language = "en";
 
+            //TODO: Get language from regestry key
             if (IntPtr.Size == 4) configuration = "x86"; //using 32Bit
             else configuration = "x64";
 
-            string link = $"https://raw.githubusercontent.com/Death-Truction/TvSeriesCalendar/master/Releases/Updates/{version}/{version}_{configuration}.zip";
+
+            string fileName = $"TvSeriesCalendar-{version}-{configuration}_{language}.msi";
+            string link = $"https://raw.githubusercontent.com/Death-Truction/TvSeriesCalendar/master/Releases/Updates/{version}/{fileName}";
+            string saveFilePath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + $@"\updates\{fileName}";
             using (WebClient wc = new WebClient())
             {
                 wc.DownloadProgressChanged += progressUpdate;
                 await wc.DownloadFileTaskAsync(
                     new Uri(link),
-                    "update.zip"
+                    saveFilePath
                 );
             }
-            ZipFile.ExtractToDirectory("update.zip", "update\\");
-            File.Delete("update.zip");
-            File.WriteAllText("update\\update.vbs", Properties.Resources.update);
-            try
-            {
-                Process scriptProc = new Process();
-                scriptProc.StartInfo.FileName = @"cscript";
-                scriptProc.StartInfo.Arguments = "//B //Nologo \"" + AppDomain.CurrentDomain.BaseDirectory + "update\\update.vbs\" " + Process.GetCurrentProcess().Id + " \"" + AppDomain.CurrentDomain.BaseDirectory + "\"";
-                scriptProc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                scriptProc.Start();
-                scriptProc.Close();
-            }
-            catch(Exception ex)
-            {
-            }
-            */
+            //TODO: Run msi file with /passive mode
+            Process process = new Process();
+            process.StartInfo.FileName = "msiexec";
+            process.StartInfo.Arguments = $" /passive /i {saveFilePath}";
+            process.Start();
+            process.Close();
         }
     }
 }

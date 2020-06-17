@@ -8,6 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>TvSeriesCalendarSetup-$(Platform)</OutputName>
     <OutputType>Package</OutputType>
+    <Name>Setup</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
@@ -25,7 +26,10 @@
     <Compile Include="ComponentsGenerated.wxs" />
     <Compile Include="ManualComponents.wxs" />
     <Compile Include="Directories.wxs" />
+    <Compile Include="MyCustomDlg.wxs" />
+    <Compile Include="MyInstallDir_UI.wxs" />
     <Compile Include="Product.wxs" />
+    <Compile Include="RemoveFiles.wxs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DesktopApplication\TvSeriesCalendar.csproj">
@@ -42,10 +46,18 @@
     <EmbeddedResource Include="english.wxl" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixIIsExtension">
+      <HintPath>$(WixExtDir)\WixIIsExtension.dll</HintPath>
+      <Name>WixIIsExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>
     </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Certificate.der" />
+    <Content Include="gpl-3.0.rtf" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
@@ -68,22 +80,28 @@
     <GetAssemblyIdentity AssemblyFiles="..\DesktopApplication\bin\$(Platform)\Release\TvSeriesCalendar.exe">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
-    <CallTarget Condition="%(CultureGroup.OutputFolder)=='en-US\'" Targets="EnglishFiles"/>
-    <CallTarget Condition="%(CultureGroup.OutputFolder)=='de-DE\'" Targets="GermanFiles"/>
+    <CallTarget Condition="%(CultureGroup.OutputFolder)=='en-US\'" Targets="EnglishFiles" />
+    <CallTarget Condition="%(CultureGroup.OutputFolder)=='de-DE\'" Targets="GermanFiles" />
   </Target>
   <Target Name="GermanFiles">
-    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
-    <Exec Command="if not exist &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot; mkdir &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
-    <Exec Command="ren &quot;$(TargetDir)\de-DE\$(TargetName).msi&quot; &quot;TvSeriesCalendar-%(AssemblyVersion.Version)-$(Platform)_de.msi" />
-    <Exec Command="move &quot;$(TargetDir)\de-DE\*&quot; &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
+    <Exec Command="if not exist &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot; mkdir &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+    <Exec Command="ren &quot;$(TargetDir)de-DE\$(TargetName).msi&quot; &quot;TvSeriesCalendar-%(AssemblyVersion.Version)-$(Platform)_de.msi" />
+    <Exec Command="move &quot;$(TargetDir)de-DE\*&quot; &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
   </Target>
   <Target Name="EnglishFiles">
-    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
-    <Exec Command="if not exist &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot; mkdir &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
-    <Exec Command="ren &quot;$(TargetDir)\en-US\$(TargetName).msi&quot; &quot;TvSeriesCalendar-%(AssemblyVersion.Version)-$(Platform)_en.msi" />
-    <Exec Command="move &quot;$(TargetDir)\en-US\*&quot; &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar-Public\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
+    <Exec Command="if not exist &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot; mkdir &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+    <Exec Command="ren &quot;$(TargetDir)en-US\$(TargetName).msi&quot; &quot;TvSeriesCalendar-%(AssemblyVersion.Version)-$(Platform)_en.msi" />
+    <Exec Command="move &quot;$(TargetDir)en-US\*&quot; &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\Debug\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <OutputPath>bin\Debug\$(Configuration)\</OutputPath>
   </PropertyGroup>
 </Project>
