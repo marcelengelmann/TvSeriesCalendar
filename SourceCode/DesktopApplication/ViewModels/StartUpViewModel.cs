@@ -75,11 +75,20 @@ namespace TvSeriesCalendar.ViewModels
             InitializeRequiredData();
             if (NextMainWindow == "main")
             {
-                string version = ApplicationUpdater.NewVersionExists();
-                if (version != "")
+                string version = ""; //ApplicationUpdater.NewVersionExists();
+                if (version == "")
                 {
+                            Console.WriteLine("test");
                     StatusText = "Downloading Updates";
-                    await ApplicationUpdater.Update(version, progressUpdate);
+                    if(!await ApplicationUpdater.Update(version, progressUpdate))
+                    {
+                        //TODO: show user error
+                        /*RunOnUiThread(() =>
+                        {
+                            throw new Exception("The Program has not been installed correctly!");
+                        });*/
+
+                    }
                     RunOnUiThread(CurrentMainWindow.Close);
                     RunOnUiThread(Application.Current.Shutdown);
                 }

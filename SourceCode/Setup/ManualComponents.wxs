@@ -7,7 +7,8 @@
           <ComponentRef Id="MainAppShortcut"/>
           <ComponentRef Id="DesktopShortcut"/>
           <ComponentRef Id="TvSeriesCalendar.cer"/>
-          <ComponentRef Id="RegistryEntries"/>
+          <ComponentRef Id="RegistryLanguage"/>
+          <ComponentRef Id="RegistryInstallPath"/>
         
         </ComponentGroup>
       
@@ -75,14 +76,22 @@
         </Component>
       </DirectoryRef>
       
-    <DirectoryRef Id="REGESTRIEENTRIES">
-      <Component Id="RegistryEntries" Guid="*">
-          <RegistryKey  Root="HKLM"
+    <DirectoryRef Id="REGESTRYENTRIES">
+      <Component Id="RegistryLanguage" Guid="*">
+         <RegistryValue Root="HKLM"
                         Key="SOFTWARE\DeathTruction\!(loc.ProductName)"
-                        Action="createAndRemoveOnUninstall">
-              <RegistryValue Type="string" Name="InstallerLanguage" Value="!(loc.LanguageName)" KeyPath="yes"/>
-              <RegistryValue Type="string" Name="InstallationPath" Value="[INSTALLFOLDER]"/>
-          </RegistryKey>
+                        Type="string"
+                        Name="InstallerLanguage"
+                        Value="!(loc.LanguageName)"
+                        KeyPath="yes"/>
+      </Component>
+      <Component Id="RegistryInstallPath" Guid="*">
+        <RegistryValue Root="HKLM"
+                       Key="SOFTWARE\DeathTruction\!(loc.ProductName)"
+                       Type="string"
+                       Name="InstallationPath" 
+                       Value="[INSTALLFOLDER]"
+                       KeyPath="yes"/>       
       </Component>
     </DirectoryRef>
       

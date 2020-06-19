@@ -25,8 +25,8 @@
       <Directory Id="Directory_Certificates" Name="Certificates">
         <Directory Id="CERTIFICATES"/>
       </Directory>
-      <Directory Id="RegEntries" Name="RegestrieEntries">
-        <Directory Id="REGESTRIEENTRIES"/>
+      <Directory Id="RegEntries" Name="RegestryEntries">
+        <Directory Id="REGESTRYENTRIES"/>
       </Directory>
     </Directory>
     <SetDirectory Id="INSTALLFOLDER" Value="[REGINSTALLDIR]">REGINSTALLDIR</SetDirectory>

@@ -84,16 +84,16 @@
     <CallTarget Condition="%(CultureGroup.OutputFolder)=='de-DE\'" Targets="GermanFiles" />
   </Target>
   <Target Name="GermanFiles">
-    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
     <Exec Command="if not exist &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot; mkdir &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
     <Exec Command="ren &quot;$(TargetDir)de-DE\$(TargetName).msi&quot; &quot;TvSeriesCalendar-%(AssemblyVersion.Version)-$(Platform)_de.msi" />
     <Exec Command="move &quot;$(TargetDir)de-DE\*&quot; &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
   </Target>
   <Target Name="EnglishFiles">
-    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
     <Exec Command="if not exist &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot; mkdir &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
     <Exec Command="ren &quot;$(TargetDir)en-US\$(TargetName).msi&quot; &quot;TvSeriesCalendar-%(AssemblyVersion.Version)-$(Platform)_en.msi" />
     <Exec Command="move &quot;$(TargetDir)en-US\*&quot; &quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\%(AssemblyVersion.Version)&quot;" />
+    <Exec Command="echo %(AssemblyVersion.Version)&gt;&quot;F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\Releases\newestVersion.txt&quot;" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent />
