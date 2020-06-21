@@ -342,6 +342,7 @@
     <Resource Include="Resources\TvSeriesCalendar.ico" />
     <EmbeddedResource Include="Backup\update.vbs" />
     <Resource Include="Backup\snippets.txt" />
+    <EmbeddedResource Include="Resources\update.vbs" />
     <Content Include="ThirdPartyNotices.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -361,6 +362,6 @@
       $(PostBuildEventDependsOn);
       PostBuildMacros;
     </PostBuildEventDependsOn>
-    <PostBuildEvent>if $(ConfigurationName) == Release "$(ProjectDir)signExe.bat" "$(ProjectDir)$(OutDir)$(TargetName)$(TargetExt)"</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release "$(ProjectDir)newRelease.bat" @(VersionNumber) $(PlatformName) "$(ProjectDir)bin\$(PlatformName)\Release"</PostBuildEvent>
   </PropertyGroup>
 </Project>

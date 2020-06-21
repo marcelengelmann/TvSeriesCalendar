@@ -1,2 +1,0 @@
-@echo off
-"F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\SourceCode\DesktopApplication\signtool.exe" sign /f "F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\SourceCode\DesktopApplication\Certificate.pfx" /p "dW$azjfp^41D5*O4ImK%%" %1
