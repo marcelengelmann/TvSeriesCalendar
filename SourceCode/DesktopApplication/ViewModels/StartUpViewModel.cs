@@ -76,7 +76,7 @@ namespace TvSeriesCalendar.ViewModels
             if (NextMainWindow == "main")
             {
                 string version = ""; //ApplicationUpdater.NewVersionExists();
-                if (version == "")
+                if (version != "")
                 {
                             Console.WriteLine("test");
                     StatusText = "Downloading Updates";

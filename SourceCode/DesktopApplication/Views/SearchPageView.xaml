@@ -6,7 +6,7 @@
              xmlns:v="clr-namespace:TvSeriesCalendar.Views"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Turquoise">
+    <Grid Background="Gray">
         <!-- Default View-->
         <Grid>
             <Grid.RowDefinitions>
