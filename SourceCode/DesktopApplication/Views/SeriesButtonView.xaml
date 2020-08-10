@@ -9,8 +9,8 @@
     <Border BorderThickness="3">
         <Border.BorderBrush>
             <MultiBinding Converter="{StaticResource StatusToBorder}">
-                <Binding Path="Status"/>
-                <Binding Path="NextSeasonReleaseDate"/>
+                <Binding Path="Status" />
+                <Binding Path="NextSeasonReleaseDate" />
             </MultiBinding>
         </Border.BorderBrush>
         <Grid Height="255" Width="150" Background="Black">
@@ -19,9 +19,13 @@
                 <RowDefinition Height="15" />
                 <RowDefinition Height="15" />
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" Source="{Binding ImagePath, FallbackValue={StaticResource defaultSeriesImage}, TargetNullValue={StaticResource defaultSeriesImage}, Converter={StaticResource PathToImage}}" />
-            <TextBlock Grid.Row="1" Text="{Binding Name}" Foreground="White" TextAlignment="Center" VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="Britannic Bold" FontSize="14" />
-            <TextBlock Grid.Row="2" Text="{Binding NextSeasonReleaseDate, Converter={StaticResource DateTimeToDate}}" Foreground="White" TextAlignment="Center" VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="Britannic Bold" FontSize="14" />
+            <Image Grid.Row="0"
+                   Source="{Binding ImagePath, FallbackValue={StaticResource defaultSeriesImage}, TargetNullValue={StaticResource defaultSeriesImage}, Converter={StaticResource PathToImage}}" />
+            <TextBlock Grid.Row="1" Text="{Binding Name}" Foreground="White" TextAlignment="Center"
+                       VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="Britannic Bold" FontSize="14" />
+            <TextBlock Grid.Row="2" Text="{Binding NextSeasonReleaseDate, Converter={StaticResource DateTimeToDate}}"
+                       Foreground="White" TextAlignment="Center" VerticalAlignment="Top" TextWrapping="Wrap"
+                       FontFamily="Britannic Bold" FontSize="14" />
         </Grid>
     </Border>
 </UserControl>

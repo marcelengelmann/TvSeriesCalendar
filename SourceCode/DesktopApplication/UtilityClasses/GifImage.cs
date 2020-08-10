@@ -1,36 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
+// ReSharper disable All
+
 namespace TvSeriesCalendar.UtilityClasses
 {
     class GifImage : Image
     {
-        private bool _isInitialized;
-        private GifBitmapDecoder _gifDecoder;
+        public static readonly DependencyProperty FrameIndexProperty =
+            DependencyProperty.Register("FrameIndex", typeof(int), typeof(GifImage),
+                new UIPropertyMetadata(0, new PropertyChangedCallback(ChangingFrameIndex)));
+
+        public static readonly DependencyProperty AutoStartProperty =
+            DependencyProperty.Register("AutoStart", typeof(bool), typeof(GifImage),
+                new UIPropertyMetadata(false, AutoStartPropertyChanged));
+
+        public static readonly DependencyProperty GifSourceProperty =
+            DependencyProperty.Register("GifSource", typeof(string), typeof(GifImage),
+                new UIPropertyMetadata(string.Empty, GifSourcePropertyChanged));
+
         private Int32Animation _animation;
-
-        public int FrameIndex
-        {
-            get { return (int)GetValue(FrameIndexProperty); }
-            set { SetValue(FrameIndexProperty, value); }
-        }
-
-        private void Initialize()
-        {
-            _gifDecoder = new GifBitmapDecoder(new Uri("pack://application:,,," + this.GifSource), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-            _animation = new Int32Animation(0, _gifDecoder.Frames.Count - 1, new Duration(new TimeSpan(0, 0, 0, _gifDecoder.Frames.Count / 30, (int)((_gifDecoder.Frames.Count / 30.0 - _gifDecoder.Frames.Count / 30) * 1000))));
-            _animation.RepeatBehavior = RepeatBehavior.Forever;
-            this.Source = _gifDecoder.Frames[0];
-
-            _isInitialized = true;
-        }
+        private GifBitmapDecoder _gifDecoder;
+        private bool _isInitialized;
 
         static GifImage()
         {
@@ -38,53 +32,67 @@ namespace TvSeriesCalendar.UtilityClasses
                 new FrameworkPropertyMetadata(VisibilityPropertyChanged));
         }
 
-        private static void VisibilityPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        public int FrameIndex
         {
-            if ((Visibility)e.NewValue == Visibility.Visible)
-            {
-                ((GifImage)sender).StartAnimation();
-            }
-            else
-            {
-                ((GifImage)sender).StopAnimation();
-            }
-        }
-
-        public static readonly DependencyProperty FrameIndexProperty =
-            DependencyProperty.Register("FrameIndex", typeof(int), typeof(GifImage), new UIPropertyMetadata(0, new PropertyChangedCallback(ChangingFrameIndex)));
-
-        static void ChangingFrameIndex(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
-        {
-            var gifImage = obj as GifImage;
-            gifImage.Source = gifImage._gifDecoder.Frames[(int)ev.NewValue];
+            get => (int) GetValue(FrameIndexProperty);
+            set => SetValue(FrameIndexProperty, value);
         }
 
         /// <summary>
-        /// Defines whether the animation starts on it's own
+        ///     Defines whether the animation starts on it's own
         /// </summary>
         public bool AutoStart
         {
-            get { return (bool)GetValue(AutoStartProperty); }
-            set { SetValue(AutoStartProperty, value); }
-        }
-
-        public static readonly DependencyProperty AutoStartProperty =
-            DependencyProperty.Register("AutoStart", typeof(bool), typeof(GifImage), new UIPropertyMetadata(false, AutoStartPropertyChanged));
-
-        private static void AutoStartPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            if ((bool)e.NewValue)
-                (sender as GifImage).StartAnimation();
+            get => (bool) GetValue(AutoStartProperty);
+            set => SetValue(AutoStartProperty, value);
         }
 
         public string GifSource
         {
-            get { return (string)GetValue(GifSourceProperty); }
-            set { SetValue(GifSourceProperty, value); }
+            get => (string) GetValue(GifSourceProperty);
+            set => SetValue(GifSourceProperty, value);
         }
 
-        public static readonly DependencyProperty GifSourceProperty =
-            DependencyProperty.Register("GifSource", typeof(string), typeof(GifImage), new UIPropertyMetadata(string.Empty, GifSourcePropertyChanged));
+        private void Initialize()
+        {
+            _gifDecoder = new GifBitmapDecoder(new Uri("pack://application:,,," + this.GifSource),
+                BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+            _animation = new Int32Animation(0,
+                _gifDecoder.Frames.Count - 1,
+                new Duration(new TimeSpan(0,
+                    0,
+                    0,
+                    _gifDecoder.Frames.Count / 30,
+                    (int) ((_gifDecoder.Frames.Count / 30.0 - _gifDecoder.Frames.Count / 30) * 1000))));
+            _animation.RepeatBehavior = RepeatBehavior.Forever;
+            this.Source = _gifDecoder.Frames[0];
+
+            _isInitialized = true;
+        }
+
+        private static void VisibilityPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((Visibility) e.NewValue == Visibility.Visible)
+            {
+                ((GifImage) sender).StartAnimation();
+            }
+            else
+            {
+                ((GifImage) sender).StopAnimation();
+            }
+        }
+
+        static void ChangingFrameIndex(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
+        {
+            var gifImage = obj as GifImage;
+            gifImage.Source = gifImage._gifDecoder.Frames[(int) ev.NewValue];
+        }
+
+        private static void AutoStartPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool) e.NewValue)
+                (sender as GifImage).StartAnimation();
+        }
 
         private static void GifSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -92,7 +100,7 @@ namespace TvSeriesCalendar.UtilityClasses
         }
 
         /// <summary>
-        /// Starts the animation
+        ///     Starts the animation
         /// </summary>
         public void StartAnimation()
         {
@@ -103,7 +111,7 @@ namespace TvSeriesCalendar.UtilityClasses
         }
 
         /// <summary>
-        /// Stops the animation
+        ///     Stops the animation
         /// </summary>
         public void StopAnimation()
         {

@@ -12,16 +12,17 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
-        <vm:StartUpViewModel/>
+        <vm:StartUpViewModel />
     </Window.DataContext>
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <uc:GifImage Grid.Row="0" GifSource="/TvSeriesCalendar;component/Resources/loading_whiteBG.gif" AutoStart="True"/>
-        <TextBlock Grid.Row="1" Text="{Binding StatusText}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <ProgressBar Grid.Row="2" Value="{Binding DownloadProgress}"/>
+        <uc:GifImage Grid.Row="0" GifSource="/TvSeriesCalendar;component/Resources/loading_whiteBG.gif"
+                     AutoStart="True" />
+        <TextBlock Grid.Row="1" Text="{Binding StatusText}" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <ProgressBar Grid.Row="2" Value="{Binding DownloadProgress}" />
     </Grid>
 </Window>

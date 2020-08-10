@@ -10,82 +10,90 @@
         <!-- Default View-->
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+                <RowDefinition Height="30" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,2">
                 <Grid Background="White">
-                        <TextBlock Text="Search for Series..." VerticalAlignment="Center">
-                            <TextBlock.Visibility>
-                                <MultiBinding Converter="{StaticResource WatermarkVisibility}">
-                                    <Binding ElementName="SearchBox" Path="Text.IsEmpty"/>
-                                    <Binding ElementName="SearchBox" Path="IsFocused"/>
-                                </MultiBinding>
-                            </TextBlock.Visibility>
-                        </TextBlock>
-                <TextBox x:Name="SearchBox" Background="Transparent" VerticalAlignment="Center" BorderThickness="0" Text="{Binding SearchText}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Return" Command="{Binding StartNewSearchCommand, Mode=OneWay}"/><!--Doesnt work-->
-                    </TextBox.InputBindings>
-                </TextBox>
+                    <TextBlock Text="Search for Series..." VerticalAlignment="Center">
+                        <TextBlock.Visibility>
+                            <MultiBinding Converter="{StaticResource WatermarkVisibility}">
+                                <Binding ElementName="SearchBox" Path="Text.IsEmpty" />
+                                <Binding ElementName="SearchBox" Path="IsFocused" />
+                            </MultiBinding>
+                        </TextBlock.Visibility>
+                    </TextBlock>
+                    <TextBox x:Name="SearchBox" Background="Transparent" VerticalAlignment="Center" BorderThickness="0"
+                             Text="{Binding SearchText}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Return" Command="{Binding StartNewSearchCommand, Mode=OneWay}" />
+                            <!--Doesnt work-->
+                        </TextBox.InputBindings>
+                    </TextBox>
                 </Grid>
             </Grid>
-            <Button Grid.Row="0" Grid.Column="3" Content="Search" Command="{Binding StartNewSearchCommand}"/>
-            <ListView Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding SearchSeries}" SelectedItem="{Binding SelectedSeries}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <v:SeriesButtonView/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+            <Button Grid.Row="0" Grid.Column="3" Content="Search" Command="{Binding StartNewSearchCommand}" />
+            <ListView Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding SearchSeries}"
+                      SelectedItem="{Binding SelectedSeries}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <v:SeriesButtonView />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="Previous" Command="{Binding DecreaseSearchPageNumberCommand}">
+                <Button Grid.Column="0" Content="Previous" Command="{Binding UpdateSearchPageNumberCommand}"
+                        CommandParameter="-">
                     <Button.Visibility>
                         <MultiBinding Converter="{StaticResource PageVisibility}">
-                            <Binding Source="Previous"/>
-                            <Binding Path="CurrentPageNumber"/>
-                            <Binding Path="SearchPagesNumber"/>
+                            <Binding Source="Previous" />
+                            <Binding Path="CurrentPageNumber" />
+                            <Binding Path="SearchPagesNumber" />
                         </MultiBinding>
                     </Button.Visibility>
                 </Button>
-                <Label Grid.Column="1" Content="{Binding CurrentPageNumber}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Grid.Column="1" Content="{Binding CurrentPageNumber}" HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
                     <Label.Visibility>
                         <MultiBinding Converter="{StaticResource PageVisibility}">
-                            <Binding Source="Label"/>
-                            <Binding Path="CurrentPageNumber"/>
-                            <Binding Path="SearchPagesNumber"/>
+                            <Binding Source="Label" />
+                            <Binding Path="CurrentPageNumber" />
+                            <Binding Path="SearchPagesNumber" />
                         </MultiBinding>
                     </Label.Visibility>
                 </Label>
-                <Button Grid.Column="2" Content="Next" Command="{Binding IncreaseSearchPageNumberCommand}">
+                <Button Grid.Column="2" Content="Next" Command="{Binding UpdateSearchPageNumberCommand}"
+                        CommandParameter="+">
                     <Button.Visibility>
                         <MultiBinding Converter="{StaticResource PageVisibility}">
-                            <Binding Source="Next"/>
-                            <Binding Path="CurrentPageNumber"/>
-                            <Binding Path="SearchPagesNumber"/>
+                            <Binding Source="Next" />
+                            <Binding Path="CurrentPageNumber" />
+                            <Binding Path="SearchPagesNumber" />
                         </MultiBinding>
                     </Button.Visibility>
                 </Button>
             </Grid>
         </Grid>
         <!--Detailed View-->
-        <v:SearchDetailedView Visibility="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}" d:IsHidden="True"/>
+        <v:SearchDetailedView
+            Visibility="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}"
+            d:IsHidden="True" />
     </Grid>
 </UserControl>

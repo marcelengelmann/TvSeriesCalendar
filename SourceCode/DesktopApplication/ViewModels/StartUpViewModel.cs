@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Dynamic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using TvSeriesCalendar.Services;
@@ -17,130 +11,138 @@ namespace TvSeriesCalendar.ViewModels
 {
     public class StartUpViewModel : ObservableObject
     {
-        private Window CurrentMainWindow;
-        private string NextMainWindow;
-        OnlineDataService _onlineDataService;
-        LocalDataService _localDataService;
+        private readonly SeriesLocalDataService _localDataService;
+        private readonly string _nextMainWindow;
+        private readonly SeriesOnlineDataService _onlineDataService;
+        private Window _currentMainWindow;
+        private int _downloadProgress;
         private string _statusText;
-        private int _downloadProgress = 0;
-
-
 
 
         public StartUpViewModel()
         {
-            CurrentMainWindow = Application.Current.MainWindow;
-            CurrentMainWindow.Visibility = Visibility.Hidden;
-            _onlineDataService = new OnlineDataService();
-            _localDataService = new LocalDataService();
+            _currentMainWindow = Application.Current.MainWindow;
+            if (_currentMainWindow != null)
+                _currentMainWindow.Visibility = Visibility.Hidden;
+            _onlineDataService = new SeriesOnlineDataService();
+            _localDataService = new SeriesLocalDataService();
             string[] args = Environment.GetCommandLineArgs();
 
-            if(args.Length == 2)
+            switch (args.Length)
             {
-                if (args[1] == "update")
-                {
-                    NextMainWindow = "updater";
-                }
-                else
+                case 2 when args[1] == "update":
+                    _nextMainWindow = "updater";
+                    break;
+                case 2 when args[1] == "showChangelog":
+                    //TODO Display Changelog
+                    if (_currentMainWindow != null)
+                        _currentMainWindow.Visibility = Visibility.Visible;
+                    _nextMainWindow = "main";
+                    break;
+                case 2:
                     throw new ArgumentException("Invalid Argument: " + args[1]);
+                case 1:
+                    if (_currentMainWindow != null)
+                        _currentMainWindow.Visibility = Visibility.Visible;
+                    _nextMainWindow = "main";
+                    break;
+                default:
+                    throw new ArgumentException("Invalid number of Arguments!");
             }
-            else if(args.Length == 1)
-            {
-                CurrentMainWindow.Visibility = Visibility.Visible;
-                NextMainWindow = "main";
-            }
-            else
-            {
-                throw new ArgumentException("Invalid number of Arguments!");
-            }
-            Task.Run(Updating).ContinueWith(x =>
-                {
-                    RunOnUiThread(ConfigLoaded);
-                });
+
+            Task.Run(Updating).ContinueWith(e => Application.Current.Dispatcher.Invoke(ConfigLoaded));
         }
 
         public string StatusText
         {
-            get { return _statusText; }
-            set { OnPropertyChanged(ref _statusText, value); }
+            get => _statusText;
+            set => OnPropertyChanged(ref _statusText, value);
         }
+
         public int DownloadProgress
         {
-            get { return _downloadProgress; }
-            set { OnPropertyChanged(ref _downloadProgress, value); }
+            get => _downloadProgress;
+            set => OnPropertyChanged(ref _downloadProgress, value);
         }
 
         public async Task Updating()
         {
             InitializeRequiredData();
-            if (NextMainWindow == "main")
+            if (_nextMainWindow == "main")
             {
-                string version = ""; //ApplicationUpdater.NewVersionExists();
-                if (version != "")
+                ApplicationUpdater.Assets[] assets = await ApplicationUpdater.NewVersionExists();
+                if (assets != null)
                 {
-                            Console.WriteLine("test");
                     StatusText = "Downloading Updates";
-                    if(!await ApplicationUpdater.Update(version, progressUpdate))
+                    try
                     {
-                        //TODO: show user error
-                        /*RunOnUiThread(() =>
-                        {
-                            throw new Exception("The Program has not been installed correctly!");
-                        });*/
-
+                        await ApplicationUpdater.Update(assets, DownloadProgressUpdate);
+                        ShutdownApplication();
                     }
-                    RunOnUiThread(CurrentMainWindow.Close);
-                    RunOnUiThread(Application.Current.Shutdown);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An Error occured during the update process");
+                    }
                 }
                 else
                 {
                     StatusText = "Updating Tv Series";
-                    TvSeriesUpdater.Update(_localDataService, _onlineDataService);
+                    await _onlineDataService.FetchTMDbConfig();
+                    await TvSeriesUpdater.Update(_localDataService, _onlineDataService, SeriesUpdateProgress);
                 }
             }
-            await _onlineDataService.FetchTMDbConfig();
         }
 
-        public void ConfigLoaded()
+        private void ConfigLoaded()
         {
-            CurrentMainWindow = Application.Current.MainWindow;
-            if (NextMainWindow == "updater")
+            _currentMainWindow = Application.Current.MainWindow;
+            if (_nextMainWindow == "updater")
             {
-                Application.Current.MainWindow = new UpdaterView();
-                Application.Current.MainWindow.DataContext = new UpdaterViewModel(_onlineDataService, _localDataService);
+                Application.Current.MainWindow = new UpdaterView
+                {
+                    DataContext = new UpdaterViewModel(_onlineDataService, _localDataService)
+                };
             }
             else //main
             {
-
                 Application.Current.MainWindow = new MainWindowView();
-                Application.Current.MainWindow.DataContext = new MainWindowViewModel(_onlineDataService, _localDataService);
+                Application.Current.MainWindow.DataContext =
+                    new MainWindowViewModel(_onlineDataService, _localDataService);
                 Application.Current.MainWindow.Show();
             }
-            CurrentMainWindow.Close();
+
+            _currentMainWindow?.Close();
         }
-        private void InitializeRequiredData()
+
+        private static void InitializeRequiredData()
         {
             try
             {
                 if (Directory.Exists("update")) Directory.Delete("update", true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+
             Directory.CreateDirectory("settings");
             Directory.CreateDirectory("images");
             Directory.CreateDirectory("savedData");
         }
 
-        private void RunOnUiThread(Action task)
+        private static void ShutdownApplication()
         {
-            Application.Current.Dispatcher.Invoke(new Action(task));
+            Application.Current.Dispatcher.BeginInvoke((Action) delegate { Application.Current.Shutdown(); });
         }
 
-        private void progressUpdate(object sender, DownloadProgressChangedEventArgs e)
+        private void DownloadProgressUpdate(object sender, DownloadProgressChangedEventArgs e)
         {
             DownloadProgress = e.ProgressPercentage;
+        }
+
+        private void SeriesUpdateProgress(int progressPercentage)
+        {
+            DownloadProgress = progressPercentage;
         }
     }
 }

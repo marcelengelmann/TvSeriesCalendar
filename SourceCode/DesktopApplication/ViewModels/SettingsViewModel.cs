@@ -1,24 +1,28 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
-using TaskScheduler;
+﻿using System.Diagnostics;
+using System.Security.Principal;
 using TvSeriesCalendar.UtilityClasses;
 
 namespace TvSeriesCalendar.ViewModels
 {
     public class SettingsViewModel : ObservableObject
     {
+        private readonly Scheduler _scheduler;
+        private readonly bool _startup;
         private bool _enableScheduler;
-        Scheduler scheduler;
-        private bool startup = true;
+
         public SettingsViewModel()
         {
-            scheduler = new Scheduler("TvSeriesCalendar");
-            if (scheduler.GetTask("RunUpdater") != null)
-                EnableScheduler = scheduler.GetTask("RunUpdater").Enabled;
-            else
+            _scheduler = new Scheduler("TvSeriesCalendar");
+            try
+            {
+                EnableScheduler = _scheduler.GetTask("RunUpdater").Enabled;
+            }
+            catch
+            {
                 EnableScheduler = false;
-            startup = false;
+            }
+
+            _startup = false;
         }
 
         public bool EnableScheduler
@@ -27,21 +31,25 @@ namespace TvSeriesCalendar.ViewModels
             set
             {
                 OnPropertyChanged(ref _enableScheduler, value);
-                if (value == true && startup == false)
+                if (value && _startup == false)
                     CreateOrEditScheduler();
-                else if (value == false && startup == false)
-                    deleteScheduledTask();
+                else if (value == false && _startup == false)
+                    DeleteScheduledTask();
             }
         }
 
 
         private void CreateOrEditScheduler()
         {
-            scheduler.AddAutorunTask("RunUpdater", Process.GetCurrentProcess().MainModule.FileName, System.Security.Principal.WindowsIdentity.GetCurrent().Name, null);
+            ProcessModule processModule = Process.GetCurrentProcess().MainModule;
+            if (processModule != null)
+                _scheduler.AddAutorunTask("RunUpdater", processModule.FileName,
+                    WindowsIdentity.GetCurrent().Name, null);
         }
-        private void deleteScheduledTask()
+
+        private void DeleteScheduledTask()
         {
-            scheduler.RemoveTask("RunUpdater");
+            _scheduler.RemoveTask("RunUpdater");
         }
     }
 }

@@ -1,33 +1,36 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TMDbLib.Client;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 using TMDbLib.Objects.TvShows;
 
+// ReSharper disable InconsistentNaming
+
 namespace TvSeriesCalendar.Services
 {
     /*
-     * TMDB Class
-     * Get all required TMDB Informations for the required purpose
+     * TMDb Class
+     * Get all required TMDb Information for the required purpose
      */
 
     public class TMDb
     {
-        public TMDbClient client { get; private set; }
         /*
          * Create a new Client with the given APIKey
          */
 
-        public TMDb(string APIKey)
+        public TMDb(string apiKey)
         {
-            client = new TMDbClient(APIKey, useSsl: true);
+            Client = new TMDbClient(apiKey, true);
         }
+
+        public TMDbClient Client { get; }
 
         /*
          * Get Image of TvSeries and save it locally
@@ -35,47 +38,48 @@ namespace TvSeriesCalendar.Services
          * Return: local filepath to image
          */
 
-        public Uri GetImageUrl(string ImageLink)
+        public Uri GetImageUrl(string imageLink)
         {
-            return client.GetImageUrl(client.Config.Images.PosterSizes[3], ImageLink, useSsl: true);
+            return Client.GetImageUrl(Client.Config.Images.PosterSizes[3], imageLink, true);
         }
 
         /*
-         * Get TvShow by given TMDB ID
+         * Get TvShow by given TMDb ID
          * Param: The TMDb ID of the Series
          * Return: the required general Information fields for the Series Object class
          */
 
-        public async Task<(string Name, int SeasonsCount, string Status, DateTime? NextSeasonrelease, Images Images)> findByTMDb(int tmdbID, int NextSeason = 0)
+        public async Task<(string Name, int SeasonsCount, string Status, DateTime? NextSeasonrelease, Images Images)>
+            FindByTMDb(int TMDbId, int nextSeason = 1)
         {
-            TvShow result = await client.GetTvShowAsync(tmdbID, TvShowMethods.Images);
+            TvShow result = await Client.GetTvShowAsync(TMDbId, TvShowMethods.Images);
             DateTime? nextSeasonRelease = null;
-            if (result.Seasons.Count > NextSeason)
-                nextSeasonRelease = result.Seasons.ElementAt(NextSeason).AirDate;
+            if (result.NumberOfSeasons > nextSeason)
+                nextSeasonRelease = result.Seasons.First(item => item.SeasonNumber == nextSeason).AirDate;
             return (result.Name, result.NumberOfSeasons, result.Status, nextSeasonRelease, result.Images);
         }
 
         /*
-         * Get Season by given TMDB ID and season number
+         * Get Season by given TMDb ID and season number
          * Param: The TMDb ID and wanted Season number of the Series
          * Return: the required Season related fields for the TvSeries object Class
          */
 
-        public TvSeason getSeason(int tmdbID, int season)
+        public TvSeason GetSeason(int TMDbId, int season)
         {
-            TvSeason result = client.GetTvSeasonAsync(tmdbID, season).Result;
+            TvSeason result = Client.GetTvSeasonAsync(TMDbId, season).Result;
             return result;
         }
 
         /*
          * Search for Series by Query(user input)
-         * Param: The Query to search for and the number of the current searchpage
+         * Param: The Query to search for and the number of the current search-page
          * Return: Search results of given page
          */
 
         public async Task<(int TotalPages, List<SearchTv> Result)> SearchForTvShows(string query, int page = 0)
         {
-            SearchContainer<SearchTv> result = await client.SearchTvShowAsync(query, page);
+            SearchContainer<SearchTv> result = await Client.SearchTvShowAsync(query, page);
             return (result.TotalPages, result.Results);
         }
 
@@ -83,21 +87,21 @@ namespace TvSeriesCalendar.Services
         {
             FileInfo configJson = new FileInfo("settings\\config.json");
 
-            Console.WriteLine("Config file: " + configJson.FullName + ", Exists: " + configJson.Exists);
+            Console.WriteLine($@"Config file: {configJson.FullName}, Exists: {configJson.Exists}");
 
             if (configJson.Exists)
             {
-                Console.WriteLine("Using stored config");
+                Console.WriteLine(@"Using stored config");
                 string json = File.ReadAllText(configJson.FullName, Encoding.UTF8);
 
                 client.SetConfig(JsonConvert.DeserializeObject<TMDbConfig>(json));
             }
             else
             {
-                Console.WriteLine("Getting new config");
-                var config = await client.GetConfigAsync();
+                Console.WriteLine(@"Getting new config");
+                TMDbConfig config = await client.GetConfigAsync();
 
-                Console.WriteLine("Storing config");
+                Console.WriteLine(@"Storing config");
                 string json = JsonConvert.SerializeObject(config);
                 File.WriteAllText(configJson.FullName, json, Encoding.UTF8);
             }

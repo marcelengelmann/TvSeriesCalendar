@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Input;
 using TvSeriesCalendar.UtilityClasses;
 
@@ -6,16 +7,18 @@ namespace TvSeriesCalendar.ViewModels
 {
     public class AboutViewModel : ObservableObject
     {
-        public ICommand OpenWebsiteCommand { get; private set; }
-        public AboutViewModel() {
+        public AboutViewModel()
+        {
             OpenWebsiteCommand = new RelayCommand<string>(OpenWebsite);
         }
 
-        private void OpenWebsite(string Url)
+        public ICommand OpenWebsiteCommand { get; }
+
+        private static void OpenWebsite(string url)
         {
             try
             {
-                System.Diagnostics.Process.Start(Url);
+                Process.Start(url);
             }
             catch (Exception e)
             {

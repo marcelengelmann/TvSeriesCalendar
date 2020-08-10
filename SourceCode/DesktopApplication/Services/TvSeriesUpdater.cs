@@ -1,43 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TvSeriesCalendar.Models;
 
 namespace TvSeriesCalendar.Services
 {
-    class TvSeriesUpdater
+    internal class TvSeriesUpdater
     {
-        public static (List<TvSeries> _updatedSeries, List<TvSeries> _todayReleasedSeasonSeries) Update(LocalDataService _localDataService, OnlineDataService _onlineDataService)
+        public static async Task<(List<TvSeries> _updatedSeries, List<TvSeries> _todayReleasedSeasonSeries)> Update(
+            SeriesLocalDataService localDataService, SeriesOnlineDataService onlineDataService,
+            Action<int> progressUpdate)
         {
-
-            List<TvSeries> _series = new List<TvSeries>(_localDataService.GetTvSeries());
-            bool changesMade = false;
-            List<TvSeries> _updatedSeries = new List<TvSeries>(); ;
-            List<TvSeries> _todayReleasedSeasonSeries = new List<TvSeries>(); ;
+            List<TvSeries> series = new List<TvSeries>(localDataService.GetTvSeries());
+            List<TvSeries> updatedSeries = new List<TvSeries>();
+            List<TvSeries> todayReleasedSeasonSeries = new List<TvSeries>();
             string today = DateTime.Today.ToString("dd/MM/yyyy");
-            _series.ForEach(e =>
+            for (int i = 0; i < series.Count; i++)
             {
-                if (e.NextSeasonReleaseDate == null && e.WatchedSeasons < e.NumberReleasedSeasons)
-                {
-                    e.NextSeasonReleaseDate = _onlineDataService.getNextSeasonReleaseDate(e.TMDbID, e.WatchedSeasons);
-                    if (e.NextSeasonReleaseDate != null)
-                    {
-                        changesMade = true;
-                        if (_updatedSeries != null) ;
-                        _updatedSeries.Add(e);
-                    }
-                }
-                else if (Convert.ToDateTime(e.NextSeasonReleaseDate).ToString("dd/MM/yyyy") == today)
-                {
-                    _todayReleasedSeasonSeries.Add(e);
-                }
-            });
-            if (changesMade)
-                _localDataService.Save(new ObservableCollection<TvSeries>(_series));
-            return (_updatedSeries, _todayReleasedSeasonSeries);
+                DateTime? oldReleaseDate = series[i].NextSeasonReleaseDate;
+                series[i] = await onlineDataService.FindSeriesByTMDb(series[i].TMDbId, series[i].WatchedSeasons);
+                if (Convert.ToDateTime(series[i].NextSeasonReleaseDate).ToString("dd/MM/yyyy") == today)
+                    todayReleasedSeasonSeries.Add(series[i]);
+                else if (oldReleaseDate == null && series[i].WatchedSeasons < series[i].NumberReleasedSeasons)
+                    if (series[i].NextSeasonReleaseDate != null)
+                        updatedSeries.Add(series[i]);
+                int percentage = (int) ((i + 1) / (double) series.Count * 100);
+                progressUpdate?.Invoke(percentage);
+            }
+
+            localDataService.Save(new ObservableCollection<TvSeries>(series));
+            return (updatedSeries, todayReleasedSeasonSeries);
         }
     }
 }

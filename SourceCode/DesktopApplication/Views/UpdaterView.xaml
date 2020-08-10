@@ -11,34 +11,40 @@
         WindowStyle="None">
     <Grid Background="#404040">
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition/>
+            <RowDefinition Height="25" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <!--TitleBar-->
-        <Grid Grid.Row="0" >
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="25"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="TvSeriesCalendar" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White"/>
-            <Button Grid.Column="1" Content="X" Command="{Binding CloseWindowCommand}" Foreground="White" Background="#404040" BorderThickness="1" BorderBrush="White"/>
-            <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0 0 0 1" BorderBrush="White"/>
+            <TextBlock Grid.Column="0" Text="TvSeriesCalendar" FontSize="16" HorizontalAlignment="Left"
+                       VerticalAlignment="Top" Foreground="White" />
+            <Button Grid.Column="1" Content="X" Command="{Binding CloseWindowCommand}" Foreground="White"
+                    Background="#404040" BorderThickness="1" BorderBrush="White" />
+            <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0 0 0 1" BorderBrush="White" />
         </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition Height="25"/>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="25" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding NewReleaseDateText}" FontSize="14" Foreground="White" Margin="5"/>
-            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding TodayReleaseText}" FontSize="14" Foreground="Green" Margin="5"/>
-            <Button Grid.Row="2" Grid.Column="0" Width="100" Background="#404040" BorderBrush="White" Foreground="White" Content="Open" Command="{Binding OpenMainProgramCommand}"/>
-            <Button Grid.Row="2" Grid.Column="1" Width="100" Background="#404040" BorderBrush="White" Foreground="White" Content="Close" Command="{Binding CloseWindowCommand}"/>
-            <Border Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="0 1 0 0" BorderBrush="White"/>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding NewReleaseDateText}" FontSize="14"
+                       Foreground="White" Margin="5" />
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding TodayReleaseText}" FontSize="14"
+                       Foreground="Green" Margin="5" />
+            <Button Grid.Row="2" Grid.Column="0" Width="100" Background="#404040" BorderBrush="White"
+                    Foreground="White" Content="Open" Command="{Binding OpenMainProgramCommand}" />
+            <Button Grid.Row="2" Grid.Column="1" Width="100" Background="#404040" BorderBrush="White"
+                    Foreground="White" Content="Close" Command="{Binding CloseWindowCommand}" />
+            <Border Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="0 1 0 0" BorderBrush="White" />
         </Grid>
     </Grid>
 </Window>

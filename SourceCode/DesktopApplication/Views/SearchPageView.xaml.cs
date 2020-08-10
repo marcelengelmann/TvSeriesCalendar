@@ -3,7 +3,7 @@
 namespace TvSeriesCalendar.Views
 {
     /// <summary>
-    /// Interaction logic for SearchView.xaml
+    ///     Interaction logic for SearchView.xaml
     /// </summary>
     public partial class SearchView : UserControl
     {

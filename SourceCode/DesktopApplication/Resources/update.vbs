@@ -20,4 +20,4 @@ For Each objFile In objFolder
         objFSO.CopyFile objFile.Path, WScript.Arguments(1)
     End If
 Next
-WshShell.Run(chr(34) & WScript.Arguments(1) & "TvSeriesCalendar.exe" & chr(34))
+WshShell.Run(chr(34) & WScript.Arguments(1) & "TvSeriesCalendar.exe" & chr(34) & "  showChangelog")

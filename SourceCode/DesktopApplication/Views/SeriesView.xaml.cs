@@ -3,7 +3,7 @@
 namespace TvSeriesCalendar.Views
 {
     /// <summary>
-    /// Interaction logic for SeriesView.xaml
+    ///     Interaction logic for SeriesView.xaml
     /// </summary>
     public partial class SeriesView : UserControl
     {

@@ -8,32 +8,34 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition/>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0">
             This product uses the TMDb API but is not endorsed or certified by
-            <Hyperlink  Command="{Binding OpenWebsiteCommand}" CommandParameter="https://www.themoviedb.org/">
+            <Hyperlink Command="{Binding OpenWebsiteCommand}" CommandParameter="https://www.themoviedb.org/">
                 TMDb
-            </Hyperlink>.
+            </Hyperlink>
+            .
         </TextBlock>
-        <Image Grid.Row="0" HorizontalAlignment="Right" Source="/TvSeriesCalendar;component/Resources/TMDbLogo.jpg"/>
+        <Image Grid.Row="0" HorizontalAlignment="Right" Source="/TvSeriesCalendar;component/Resources/TMDbLogo.jpg" />
         <TextBlock Grid.Row="1">
             Used Dependencies:
         </TextBlock>
         <TextBlock Grid.Row="2">
-             - 
+            -
             <Hyperlink Command="{Binding OpenWebsiteCommand}" CommandParameter="https://github.com/LordMike/TMDbLib">
                 TMDbLib
             </Hyperlink>
-            
+
         </TextBlock>
         <TextBlock Grid.Row="3">
-             - 
-            <Hyperlink  Command="{Binding OpenWebsiteCommand}" CommandParameter="https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md">
+            -
+            <Hyperlink Command="{Binding OpenWebsiteCommand}"
+                       CommandParameter="https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md">
                 Newtonsoft
             </Hyperlink>
 

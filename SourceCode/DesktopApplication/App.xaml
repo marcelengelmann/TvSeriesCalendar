@@ -9,7 +9,7 @@
     <Application.Resources>
         <!--Binding ViewModels to Views-->
         <DataTemplate DataType="{x:Type vm:SeriesViewModel}">
-            <v:SeriesView/>
+            <v:SeriesView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:SearchViewModel}">
             <v:SearchView />
@@ -21,12 +21,12 @@
             <v:AboutView />
         </DataTemplate>
         <!--Value Converters-->
-        <vc:PathToImageConverter x:Key="PathToImage"/>
-        <vc:DateTimeToDateConverter x:Key="DateTimeToDate"/>
-        <vc:SelectedSeriesToVisibilityConverter x:Key="SelectedSeriesToVisibility"/>
-        <vc:SearchBoxWatermarkVisibilityConverter x:Key="WatermarkVisibility"/>
-        <vc:PageNumberToVisibilityConverter x:Key="PageVisibility"/>
-        <vc:StatusToBorderConverter x:Key="StatusToBorder"/>
+        <vc:PathToImageConverter x:Key="PathToImage" />
+        <vc:DateTimeToDateConverter x:Key="DateTimeToDate" />
+        <vc:SelectedSeriesToVisibilityConverter x:Key="SelectedSeriesToVisibility" />
+        <vc:SearchBoxWatermarkVisibilityConverter x:Key="WatermarkVisibility" />
+        <vc:PageNumberToVisibilityConverter x:Key="PageVisibility" />
+        <vc:StatusToBorderConverter x:Key="StatusToBorder" />
         <!--Images-->
         <BitmapImage x:Key="defaultSeriesImage" UriSource="/Resources/defaultSeries.png" />
         <!--Styles-->

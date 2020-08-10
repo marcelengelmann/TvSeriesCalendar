@@ -9,7 +9,7 @@
         Title="TvSeriesCalendar" Height="800" Width="920" MinHeight="450" MinWidth="835">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0">
             <!-- Navbar -->
@@ -20,10 +20,14 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="Series" Style="{StaticResource NavigationButton}" Command="{Binding changeViewToSeriesCommand}" />
-                <Button Grid.Column="1" Content="Search" Style="{StaticResource NavigationButton}" Command="{Binding changeViewToSearchCommand}"/>
-                <Button Grid.Column="2" Content="Settings" Style="{StaticResource NavigationButton}" Command="{Binding changeViewToSettingsCommand}"/>
-                <Button Grid.Column="3" Content="About" Style="{StaticResource NavigationButton}" Command="{Binding changeViewToAboutCommand}"/>
+                <Button Grid.Column="0" Content="Series" Style="{StaticResource NavigationButton}"
+                        Command="{Binding ChangeViewToSeriesCommand}" />
+                <Button Grid.Column="1" Content="Search" Style="{StaticResource NavigationButton}"
+                        Command="{Binding ChangeViewToSearchCommand}" />
+                <Button Grid.Column="2" Content="Settings" Style="{StaticResource NavigationButton}"
+                        Command="{Binding ChangeViewToSettingsCommand}" />
+                <Button Grid.Column="3" Content="About" Style="{StaticResource NavigationButton}"
+                        Command="{Binding ChangeViewToAboutCommand}" />
             </Grid>
             <!-- Content -->
             <Grid DockPanel.Dock="Bottom">

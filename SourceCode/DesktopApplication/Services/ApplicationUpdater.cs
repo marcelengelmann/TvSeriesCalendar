@@ -1,73 +1,111 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO.Compression;
-using System.IO;
 using System.Diagnostics;
-using System.Windows;
-using System.Threading;
-using TMDbLib.Objects.Languages;
+using System.IO;
+using System.IO.Compression;
+using System.Net;
 using System.Reflection;
-using Microsoft.Win32;
-using System.Windows.Input;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using TvSeriesCalendar.Properties;
+
+// ReSharper disable InconsistentNaming
 
 namespace TvSeriesCalendar.Services
 {
-    class ApplicationUpdater
+    internal class ApplicationUpdater
     {
-        internal static string NewVersionExists()
+        /// <summary>
+        ///     Gets the Releases of the project from github and compares the latest release version with the assembly version
+        /// </summary>
+        /// <returns></returns>
+        internal static async Task<Assets[]> NewVersionExists()
         {
-            string versionFileURL = "https://raw.githubusercontent.com/Death-Truction/TvSeriesCalendar/master/Releases/newestVersion.txt";
-            string newestVersion = (new WebClient()).DownloadString(versionFileURL).Replace("\n", "").Replace("\r", "");
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string currentVersion = fvi.FileVersion;
-            if(newestVersion.Equals(currentVersion)) return "";
-            return newestVersion;
+            const string releasesUrl = "https://api.github.com/repos/Death-Truction/TvSeriesCalendar/releases";
+            string githubReleases = await DownloadAsString(releasesUrl);
+            if (githubReleases == "") //e.g. happens when api quota reached
+                return null;
+
+            List<Release> allReleases = JsonConvert.DeserializeObject<List<Release>>(githubReleases);
+            allReleases.Sort((a, b) => string.CompareOrdinal(b.Tag_Name, a.Tag_Name));
+            Release latestRelease = allReleases.Find(release => release.PreRelease == false);
+            if (latestRelease == null)
+                return null;
+            return string.CompareOrdinal(currentVersion, latestRelease.Tag_Name) < 0 ? latestRelease.Assets : null;
         }
 
-        internal static async Task<bool> Update(string version, DownloadProgressChangedEventHandler progressUpdate)
+        internal static async Task Update(Assets[] assets, DownloadProgressChangedEventHandler progressUpdate)
         {
-            string configuration;
-            string language;
+            string url;
+            if (IntPtr.Size == 4)
+                //using 32Bit
+                url = assets[0].Name.Contains("x86") ? assets[0].Browser_download_url : assets[1].Browser_download_url;
+            else // using 64Bit
+                url = assets[0].Name.Contains("x64") ? assets[0].Browser_download_url : assets[1].Browser_download_url;
 
-            if (IntPtr.Size == 4) configuration = "x86"; //using 32Bit
-            else configuration = "x64";
-
-            RegistryKey AppKey = Registry.LocalMachine.OpenSubKey(@"Software\DeathTruction\TvSeriesCalendar");
-            if (AppKey != null)
-            {
-                language = AppKey.GetValue("InstallerLanguage").ToString();
-                AppKey.Close();
-            }
-            else
-                return false;
-
-            string fileName = $"TvSeriesCalendar-{version}-{configuration}_{language}.msi";
-            string link = $"https://raw.githubusercontent.com/Death-Truction/TvSeriesCalendar/master/Releases/{version}/{fileName}";
-            string saveFilePath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + $@"\updates\{fileName}";
-                Directory.CreateDirectory("updates");
             using (WebClient wc = new WebClient())
             {
                 wc.DownloadProgressChanged += progressUpdate;
+                wc.Headers.Add("User-Agent", "TvSeriesCalendar");
                 await wc.DownloadFileTaskAsync(
-                    new Uri(link),
-                    saveFilePath
+                    new Uri(url),
+                    "update.zip"
                 );
             }
-            //TODO: Run msi file with /passive mode
-            Process process = new Process();
-            process.StartInfo.FileName = "msiexec";
-            process.StartInfo.Arguments = $" /passive /i \"{saveFilePath}\"";
-            process.Start();
-            process.Close();
-            return true;
+
+            ZipFile.ExtractToDirectory("update.zip", "update\\");
+            File.Delete("update.zip");
+            File.WriteAllText("update\\update.vbs", Resources.update);
+            try
+            {
+                Process scriptProc = new Process
+                {
+                    StartInfo =
+                    {
+                        FileName = @"cscript",
+                        Arguments = "//B //Nologo \"" + AppDomain.CurrentDomain.BaseDirectory +
+                                    "update\\update.vbs\" " + Process.GetCurrentProcess().Id + " \"" +
+                                    AppDomain.CurrentDomain.BaseDirectory + "\"",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    }
+                };
+                scriptProc.Start();
+                scriptProc.Close();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private static async Task<string> DownloadAsString(string URL)
+        {
+            WebClient client = new WebClient();
+            client.Headers.Add("User-Agent", "TvSeriesCalendar");
+
+            try
+            {
+                return await client.DownloadStringTaskAsync(URL);
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        internal class Release
+        {
+            public string Tag_Name { get; set; }
+            public Assets[] Assets { get; set; }
+            public bool PreRelease { get; set; }
+        }
+
+        internal class Assets
+        {
+            public string Name { get; set; }
+            public string Browser_download_url { get; set; }
         }
     }
 }
-

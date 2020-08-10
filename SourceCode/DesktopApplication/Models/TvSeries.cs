@@ -1,44 +1,48 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Newtonsoft.Json;
 using TvSeriesCalendar.UtilityClasses;
 
 namespace TvSeriesCalendar.Models
 {
     public class TvSeries : ObservableObject
     {
-        private int _watchedSeasons;
-        private DateTime? _nextSeasonReleaseDate;
         private string _imagePath;
-        public int TMDbID { get; private set; }
-        public string Name { get; private set; }
-        public int NumberReleasedSeasons { get; set; }
-        public string Status { get; set; }
+        private DateTime? _nextSeasonReleaseDate;
+        private int _watchedSeasons;
+
         [JsonConstructor] // Defines the Constructor for the JsonConvert.DeserializeObject method
-        public TvSeries(int TMDbID, string Name, int WatchedSeasons, DateTime? NextSeasonReleaseDate, int NumberReleasedSeasons, string Status)
+        public TvSeries(int TMDbId, string name, int watchedSeasons, DateTime? nextSeasonReleaseDate,
+            int numberReleasedSeasons, string status)
         {
-            this.TMDbID = TMDbID;
-            this.Name = Name;
-            this.WatchedSeasons = WatchedSeasons;
-            this.NextSeasonReleaseDate = NextSeasonReleaseDate;
-            this.NumberReleasedSeasons = NumberReleasedSeasons;
-            this.Status = Status;
+            this.TMDbId = TMDbId;
+            Name = name;
+            WatchedSeasons = watchedSeasons;
+            NextSeasonReleaseDate = nextSeasonReleaseDate;
+            NumberReleasedSeasons = numberReleasedSeasons;
+            Status = status;
         }
 
-        public string ImagePath {
-            get { return _imagePath; }
-            set { OnPropertyChanged(ref _imagePath, value); } 
+        public int TMDbId { get; }
+        public string Name { get; }
+        public int NumberReleasedSeasons { get; set; }
+        public string Status { get; set; }
+
+        public string ImagePath
+        {
+            get => _imagePath;
+            set => OnPropertyChanged(ref _imagePath, value);
         }
+
         public int WatchedSeasons
         {
-            get { return _watchedSeasons; }
-            set { OnPropertyChanged(ref _watchedSeasons, value); }
+            get => _watchedSeasons;
+            set => OnPropertyChanged(ref _watchedSeasons, value);
         }
 
         public DateTime? NextSeasonReleaseDate
         {
-            get { return _nextSeasonReleaseDate; }
-            set { OnPropertyChanged(ref _nextSeasonReleaseDate, value); }
+            get => _nextSeasonReleaseDate;
+            set => OnPropertyChanged(ref _nextSeasonReleaseDate, value);
         }
     }
 }
