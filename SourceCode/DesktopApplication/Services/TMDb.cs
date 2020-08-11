@@ -54,7 +54,7 @@ namespace TvSeriesCalendar.Services
         {
             TvShow result = await Client.GetTvShowAsync(TMDbId, TvShowMethods.Images);
             DateTime? nextSeasonRelease = null;
-            if (result.NumberOfSeasons > nextSeason)
+            if (result.NumberOfSeasons >= nextSeason)
                 nextSeasonRelease = result.Seasons.First(item => item.SeasonNumber == nextSeason).AirDate;
             return (result.Name, result.NumberOfSeasons, result.Status, nextSeasonRelease, result.Images);
         }
