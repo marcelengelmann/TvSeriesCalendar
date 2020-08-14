@@ -81,25 +81,6 @@ namespace TvSeriesCalendar.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set WshShell = CreateObject(&quot;WScript.Shell&quot;)
-        ///Dim objWMIService, colProcessList
-        ///Set objWMIService = GetObject(&quot;winmgmts:&quot; &amp; &quot;{impersonationLevel=impersonate}!\\&quot; &amp; &quot;.&quot; &amp; &quot;\root\cimv2&quot;)
-        ///if WScript.Arguments.Count &lt;&gt; 2 then
-        ///    WScript.Echo &quot;Something Went Wrong&quot;
-        ///	WScript.Quit 1
-        ///end if
-        ///Set colProcessList = objWMIService.ExecQuery(&quot;SELECT * FROM Win32_Process WHERE ProcessId = &apos;&quot; &amp; WScript.Arguments(0) &amp; &quot;&apos;&quot;)
-        ///Do While colProcessList.Count = 1
-        ///	WScript.Sleep 100
-        ///	Set colProcessList = objWMIService.Exec [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string update {
-            get {
-                return ResourceManager.GetString("update", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap whiteMinus {

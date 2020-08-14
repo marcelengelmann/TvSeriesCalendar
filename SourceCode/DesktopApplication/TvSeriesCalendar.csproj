@@ -336,7 +336,10 @@
   <ItemGroup>
     <Resource Include="TvSeriesCalendar.ico" />
     <Resource Include="Resources\TvSeriesCalendar.ico" />
-    <EmbeddedResource Include="Resources\update.vbs" />
+    <ContentWithTargetPath Include="Resources\update.vbs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>update.vbs</TargetPath>
+    </ContentWithTargetPath>
     <None Include="ThirdPartyNotices.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>lib\ThirdPartyNotices.txt</TargetPath>
