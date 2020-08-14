@@ -25,7 +25,7 @@ namespace TvSeriesCalendar.Services
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string currentVersion = fvi.FileVersion;
             const string releasesUrl = "https://api.github.com/repos/Death-Truction/TvSeriesCalendar/releases";
-            string githubReleases = await DownloadAsString(releasesUrl);
+            string githubReleases = await GetFromGithub.DownloadAsString(releasesUrl);
             if (githubReleases == "") //e.g. happens when api quota reached
                 return null;
 
@@ -46,15 +46,7 @@ namespace TvSeriesCalendar.Services
             else // using 64Bit
                 url = assets[0].Name.Contains("x64") ? assets[0].Browser_download_url : assets[1].Browser_download_url;
 
-            using (WebClient wc = new WebClient())
-            {
-                wc.DownloadProgressChanged += progressUpdate;
-                wc.Headers.Add("User-Agent", "TvSeriesCalendar");
-                await wc.DownloadFileTaskAsync(
-                    new Uri(url),
-                    "update.zip"
-                );
-            }
+            await GetFromGithub.DownloadFileAsync(url, progressUpdate);
 
             ZipFile.ExtractToDirectory("update.zip", "update\\");
             File.Delete("update.zip");
@@ -77,21 +69,6 @@ namespace TvSeriesCalendar.Services
             }
             catch (Exception ex)
             {
-            }
-        }
-
-        private static async Task<string> DownloadAsString(string URL)
-        {
-            WebClient client = new WebClient();
-            client.Headers.Add("User-Agent", "TvSeriesCalendar");
-
-            try
-            {
-                return await client.DownloadStringTaskAsync(URL);
-            }
-            catch (Exception)
-            {
-                return "";
             }
         }
 

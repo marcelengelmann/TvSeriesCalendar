@@ -1,0 +1,13 @@
+﻿<Window x:Class="TvSeriesCalendar.Views.ChangelogWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TvSeriesCalendar.Views"
+        xmlns:wpf="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
+        mc:Ignorable="d"
+        Title="TvSeriesCalender-Changelog" Height="600" Width="500"
+        ResizeMode="NoResize"
+        >
+        <wpf:HtmlPanel Text="{Binding MarkdownText}" Margin="10 0"/>
+</Window>

@@ -104,7 +104,23 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ReferenceCopyLocalPaths>
+      <DestinationSubDirectory>lib\</DestinationSubDirectory>
+    </ReferenceCopyLocalPaths>
+  </ItemDefinitionGroup>
   <ItemGroup>
+    <Reference Include="HtmlRenderer, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.6\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.WPF, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.WPF.1.5.0.6\lib\net45\HtmlRenderer.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Markdig, Version=0.20.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.20.0\lib\netstandard2.0\Markdig.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -129,6 +145,8 @@
     </Reference>
     <Reference Include="TMDbLib, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\TMDbLib.1.6.0\lib\net45\TMDbLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -144,6 +162,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\GetFromGithub.cs" />
     <Compile Include="Services\TvSeriesUpdater.cs" />
     <Compile Include="Services\ApplicationUpdater.cs" />
     <Compile Include="Services\SeriesLocalDataService.cs" />
@@ -151,6 +170,7 @@
     <Compile Include="UtilityClasses\ObservableObject.cs" />
     <Compile Include="UtilityClasses\Scheduler.cs" />
     <Compile Include="ValueConverter\StatusToBorderConverter.cs" />
+    <Compile Include="ViewModels\ChangelogWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="UtilityClasses\RelayCommand.cs" />
     <Compile Include="ValueConverter\SelectedSeriesToVisibilityConverter.cs" />
@@ -169,6 +189,9 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\StartUpViewModel.cs" />
+    <Compile Include="Views\ChangelogWindowView.xaml.cs">
+      <DependentUpon>ChangelogWindowView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchDetailedView.xaml.cs">
       <DependentUpon>SearchDetailedView.xaml</DependentUpon>
     </Compile>
@@ -194,6 +217,10 @@
     <Compile Include="Views\UpdaterView.xaml.cs">
       <DependentUpon>UpdaterView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ChangelogWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -263,6 +290,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <ContentWithTargetPath Include="Resources\LICENSE">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>LICENSE</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -313,9 +344,10 @@
     <Resource Include="Resources\TMDbLogo.jpg" />
     <Resource Include="Resources\TvSeriesCalendar.ico" />
     <EmbeddedResource Include="Resources\update.vbs" />
-    <Content Include="ThirdPartyNotices.txt">
+    <ContentWithTargetPath Include="ThirdPartyNotices.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+      <TargetPath>lib\ThirdPartyNotices.txt</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -334,10 +366,10 @@
     </PostBuildEventDependsOn>
     <PostBuildEvent>if $(ConfigurationName) neq Release exit 0
 cd "$(ProjectDir)"
-copy "$(SolutionDir)..\LICENSE.md" "$(TargetDir)\LICENSE" /Y
 cd "$(TargetDir)"
 del *.pdb 2&gt;NUL
-del *.xml 2&gt;NUL
+del lib\*.pdb 2&gt;NUL
+del lib\*.xml 2&gt;NUL
 if exist "$(SolutionDir)..\Releases\$(TargetName)-@(VersionNumber)-$(PlatformName).zip" exit 1
 7z a -x!*.zip  -tzip "$(SolutionDir)..\Releases\$(TargetName)-@(VersionNumber)-$(PlatformName).zip" *</PostBuildEvent>
   </PropertyGroup>

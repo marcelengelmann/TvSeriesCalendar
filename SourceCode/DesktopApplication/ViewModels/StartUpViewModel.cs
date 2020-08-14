@@ -34,10 +34,15 @@ namespace TvSeriesCalendar.ViewModels
                     _nextMainWindow = "updater";
                     break;
                 case 2 when args[1] == "showChangelog":
-                    //TODO Display Changelog
                     if (_currentMainWindow != null)
                         _currentMainWindow.Visibility = Visibility.Visible;
                     _nextMainWindow = "main";
+                    ChangelogWindowView changelogWindow = new ChangelogWindowView
+                    {
+                        DataContext = new ChangelogWindowViewModel(),
+                    };
+                    changelogWindow.Topmost = true;
+                    changelogWindow.Show();
                     break;
                 case 2:
                     throw new ArgumentException("Invalid Argument: " + args[1]);
