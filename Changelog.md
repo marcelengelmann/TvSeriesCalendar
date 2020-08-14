@@ -6,6 +6,7 @@
 ### Fixed
 * Fixed a bug where the release date was not displayed correctly
 ### Changed
+* Changed the information inside the about tab
 * Moved the dependency locations into the lib folder
   * You can delete all .dll files inside the application's main folder
 ## 0.0.1
