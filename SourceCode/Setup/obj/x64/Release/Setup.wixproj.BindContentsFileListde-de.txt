@@ -1,6 +1,0 @@
-..\DesktopApplication\bin\x64\Release\\TMDbLib.dll
-..\DesktopApplication\bin\x64\Release\\Newtonsoft.Json.xml
-..\DesktopApplication\bin\x64\Release\\ThirdPartyNotices.txt
-..\DesktopApplication\bin\x64\Release\\Newtonsoft.Json.dll
-..\DesktopApplication\bin\x64\Release\\TvSeriesCalendar.exe.config
-..\DesktopApplication\bin\x64\Release\\TvSeriesCalendar.exe

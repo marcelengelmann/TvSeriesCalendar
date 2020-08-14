@@ -1,2 +1,0 @@
-F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalenderDesktopApplication\Setup\bin\Debug\x86\en-US\TvSeriesCalendarSetup-x86.msi
-F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalenderDesktopApplication\Setup\bin\Debug\x86\en-US\TvSeriesCalendarSetup-x86.wixpdb

@@ -1,1 +1,0 @@
-F:\Programs\Workspaces\Visual Studio\Projects\TvSeriesCalendar\SourceCode\Setup\bin\Release\x86\de-DE\TvSeriesCalendarSetup-x86.msi
