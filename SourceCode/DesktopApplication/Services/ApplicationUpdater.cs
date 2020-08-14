@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using Newtonsoft.Json;
 using TvSeriesCalendar.Properties;
 
@@ -31,7 +32,7 @@ namespace TvSeriesCalendar.Services
 
             List<Release> allReleases = JsonConvert.DeserializeObject<List<Release>>(githubReleases);
             allReleases.Sort((a, b) => string.CompareOrdinal(b.Tag_Name, a.Tag_Name));
-            Release latestRelease = allReleases.Find(release => release.PreRelease == false);
+            Release latestRelease = allReleases.Find(release => release.PreRelease == true);
             if (latestRelease == null)
                 return null;
             return string.CompareOrdinal(currentVersion, latestRelease.Tag_Name) < 0 ? latestRelease.Assets : null;
@@ -50,6 +51,9 @@ namespace TvSeriesCalendar.Services
 
             ZipFile.ExtractToDirectory("update.zip", "update\\");
             File.Delete("update.zip");
+            Console.WriteLine("//B //Nologo \"" + AppDomain.CurrentDomain.BaseDirectory +
+                              "update\\update.vbs\" " + Process.GetCurrentProcess().Id + " \"" +
+                              AppDomain.CurrentDomain.BaseDirectory + "\"");
             try
             {
                 Process scriptProc = new Process

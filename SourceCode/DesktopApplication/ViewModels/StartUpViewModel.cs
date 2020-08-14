@@ -55,7 +55,11 @@ namespace TvSeriesCalendar.ViewModels
                     throw new ArgumentException("Invalid number of Arguments!");
             }
 
-            Task.Run(Updating).ContinueWith(e => Application.Current.Dispatcher.Invoke(ConfigLoaded));
+            Task.Run(Updating).ContinueWith(e =>
+            {
+                if(e.Result)
+                    Application.Current.Dispatcher.Invoke(ConfigLoaded);
+            });
         }
 
         public string StatusText
@@ -70,32 +74,29 @@ namespace TvSeriesCalendar.ViewModels
             set => OnPropertyChanged(ref _downloadProgress, value);
         }
 
-        public async Task Updating()
+        public async Task<bool> Updating()
         {
             InitializeRequiredData();
-            if (_nextMainWindow == "main")
+            if (_nextMainWindow != "main") return true;
+            ApplicationUpdater.Assets[] assets = await ApplicationUpdater.NewVersionExists();
+            if (assets != null)
             {
-                ApplicationUpdater.Assets[] assets = await ApplicationUpdater.NewVersionExists();
-                if (assets != null)
+                StatusText = "Downloading Updates";
+                try
                 {
-                    StatusText = "Downloading Updates";
-                    try
-                    {
-                        await ApplicationUpdater.Update(assets, DownloadProgressUpdate);
-                        ShutdownApplication();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("An Error occured during the update process");
-                    }
+                    await ApplicationUpdater.Update(assets, DownloadProgressUpdate);
+                    ShutdownApplication();
                 }
-                else
+                catch (Exception ex)
                 {
-                    StatusText = "Updating Tv Series";
-                    await _onlineDataService.FetchTMDbConfig();
-                    await TvSeriesUpdater.Update(_localDataService, _onlineDataService, SeriesUpdateProgress);
+                    MessageBox.Show("An Error occured during the update process");
                 }
+                return false;
             }
+            StatusText = "Updating Tv Series";
+            await _onlineDataService.FetchTMDbConfig();
+            await TvSeriesUpdater.Update(_localDataService, _onlineDataService, SeriesUpdateProgress);
+            return true;
         }
 
         private void ConfigLoaded()
