@@ -1,5 +1,6 @@
 # Changelog
 ## 0.0.2
+**If the application crashes copy all files within the update folder into the main folder**
 ### Added
 * Show Changelog after Updating
 ### Fixed
