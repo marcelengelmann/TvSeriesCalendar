@@ -16,4 +16,4 @@ Got an idea on how to improve the application or did you find any bugs? Feel fre
 ## 0.0.1
 * Initial release
 # Used Libraries and Code-Snippets
-[Third Party Notice](https://github.com/Death-Truction/TvSeriesCalendar/blob/master/SourceCode/DesktopApplication/ThirdPartyNotices.txt)
+[Third Party Notice](https://github.com/Death-Truction/TvSeriesCalendar/blob/master/SourceCode/DesktopApplication/ThirdPartyNotices.md)
