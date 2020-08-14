@@ -71,92 +71,12 @@ namespace TvSeriesCalendar.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] LICENSE {
-            get {
-                object obj = ResourceManager.GetObject("LICENSE", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap loading_blackBG {
-            get {
-                object obj = ResourceManager.GetObject("loading_blackBG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap loading_whiteBG {
-            get {
-                object obj = ResourceManager.GetObject("loading_whiteBG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TvSeriesCalendar
-        ///
-        ///THIRD-PARTY SOFTWARE NOTICES AND INFORMATION
-        ///Do Not Translate or Localize
-        ///
-        ///1.	LordMike/TMDbLib version 1.6.0 (https://github.com/LordMike/TMDbLib)
-        ///2.	JamesNK/Newtonsoft.Json version 12.0.3 (https://github.com/JamesNK/Newtonsoft.Json)
-        ///3.	TheMovieDatabase API (https://www.themoviedb.org/)
-        ///4.  wixtoolset/wix3 (https://github.com/wixtoolset/wix3)
-        ///5.  diub/TaskScheduler Source Code (https://dotnet-snippets.de/snippet/windows-aufgabenplaner-taskscheduler-benutzen/15191)
-        ///
-        ///
-        ///LordMike/TM [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string ThirdPartyNotices {
-            get {
-                return ResourceManager.GetString("ThirdPartyNotices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TMDbLogo {
-            get {
-                object obj = ResourceManager.GetObject("TMDbLogo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon TvSeriesCalendar {
             get {
                 object obj = ResourceManager.GetObject("TvSeriesCalendar", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Set WshShell = CreateObject(&quot;WScript.Shell&quot;)
-        ///Dim objWMIService, colProcessList
-        ///Set objWMIService = GetObject(&quot;winmgmts:&quot; &amp; &quot;{impersonationLevel=impersonate}!\\&quot; &amp; &quot;.&quot; &amp; &quot;\root\cimv2&quot;)
-        ///if WScript.Arguments.Count &lt;&gt; 2 then
-        ///    WScript.Echo &quot;Something Went Wrong&quot;
-        ///	WScript.Quit 1
-        ///end if
-        ///Set colProcessList = objWMIService.ExecQuery(&quot;SELECT * FROM Win32_Process WHERE ProcessId = &apos;&quot; &amp; WScript.Arguments(0) &amp; &quot;&apos;&quot;)
-        ///Do While colProcessList.Count = 1
-        ///	WScript.Sleep 100
-        ///	Set colProcessList = objWMIService.Exec [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string update {
-            get {
-                return ResourceManager.GetString("update", resourceCulture);
             }
         }
         

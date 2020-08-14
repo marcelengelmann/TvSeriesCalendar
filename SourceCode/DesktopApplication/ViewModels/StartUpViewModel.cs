@@ -124,6 +124,7 @@ namespace TvSeriesCalendar.ViewModels
             try
             {
                 if (Directory.Exists("update")) Directory.Delete("update", true);
+                if (File.Exists("update.vbs"))  File.Delete("update.vbs");
             }
             catch (Exception ex)
             {

@@ -4,7 +4,7 @@ THIRD-PARTY SOFTWARE NOTICES AND INFORMATION
 Do Not Translate or Localize
 
 * LordMike/TMDbLib version 1.6.0 (https://github.com/LordMike/TMDbLib)
-*	JamesNK/Newtonsoft.Json version 12.0.3 (https://github.com/JamesNK/Newtonsoft.Json)
+* JamesNK/Newtonsoft.Json version 12.0.3 (https://github.com/JamesNK/Newtonsoft.Json)
 * TheMovieDatabase API (https://www.themoviedb.org/)
 * diub/TaskScheduler Source Code (https://dotnet-snippets.de/snippet/windows-aufgabenplaner-taskscheduler-benutzen/15191)
 * ArthurHub/HTML-Renderer (https://github.com/ArthurHub/HTML-Renderer)
@@ -44,6 +44,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## TheMovieDatabase API NOTICES AND INFORMATION
+This product uses the TMDb API but is not endorsed or certified by  
+[<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" width="50%">](https://www.themoviedb.org/)
+
 
 ## ArthurHub/HTML-Renderer NOTICES AND INFORMATION
 Copyright (c) 2009, José Manuel Menéndez Poo

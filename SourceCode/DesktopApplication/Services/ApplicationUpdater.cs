@@ -50,7 +50,6 @@ namespace TvSeriesCalendar.Services
 
             ZipFile.ExtractToDirectory("update.zip", "update\\");
             File.Delete("update.zip");
-            File.WriteAllText("update\\update.vbs", Resources.update);
             try
             {
                 Process scriptProc = new Process
