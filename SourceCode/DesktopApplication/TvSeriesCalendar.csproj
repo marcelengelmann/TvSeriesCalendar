@@ -157,11 +157,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Services\GetFromGithub.cs" />
     <Compile Include="Services\TvSeriesUpdater.cs" />
     <Compile Include="Services\ApplicationUpdater.cs" />
@@ -281,7 +276,6 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -323,12 +317,6 @@
     <Resource Include="Resources\whitePlus.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\loading_blackBG.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\loading_whiteBG.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="TaskScheduler">
       <Guid>{E34CB9F1-C7F7-424C-BE29-027DCC09363A}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -341,13 +329,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="TvSeriesCalendar.ico" />
-    <Resource Include="Resources\TMDbLogo.jpg" />
     <Resource Include="Resources\TvSeriesCalendar.ico" />
     <EmbeddedResource Include="Resources\update.vbs" />
-    <ContentWithTargetPath Include="ThirdPartyNotices.txt">
+    <None Include="ThirdPartyNotices.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>lib\ThirdPartyNotices.txt</TargetPath>
-    </ContentWithTargetPath>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
