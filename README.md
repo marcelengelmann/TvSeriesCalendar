@@ -5,6 +5,7 @@ Got an idea on how to improve the application or did you find any bugs? Feel fre
 # Contributors
 # Changelog
 ## 0.0.2
+**If the application crashes copy all files within the update folder into the main folder**
 ### Added
 * Show Changelog after Updating
 ### Fixed
