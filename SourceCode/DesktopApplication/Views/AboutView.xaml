@@ -14,6 +14,8 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Image Grid.Row="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico"/>
@@ -24,6 +26,12 @@
             </Hyperlink>
         </TextBlock>
         <TextBlock Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
+            <Hyperlink Command="{Binding OpenWebsiteCommand}" CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar/blob/master/LICENSE">
+                License
+            </Hyperlink>
+
+        </TextBlock>
+        <TextBlock Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
             <Hyperlink Command="{Binding OpenWebsiteCommand}" CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar/blob/master/SourceCode/DesktopApplication/ThirdPartyNotices.md">
                 Third Party Notice
             </Hyperlink>
