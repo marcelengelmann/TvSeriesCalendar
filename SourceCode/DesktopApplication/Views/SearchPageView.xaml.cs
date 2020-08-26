@@ -11,5 +11,10 @@ namespace TvSeriesCalendar.Views
         {
             InitializeComponent();
         }
+
+        private void SearchBox_TextChanged()
+        {
+
+        }
     }
 }

@@ -116,10 +116,8 @@
     <Reference Include="HtmlRenderer.WPF, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlRenderer.WPF.1.5.0.6\lib\net45\HtmlRenderer.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="Markdig, Version=0.20.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Markdig.0.20.0\lib\netstandard2.0\Markdig.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <Private>True</Private>
+    <Reference Include="Markdig, Version=0.21.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.21.1\lib\net452\Markdig.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -136,6 +134,9 @@
       <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -167,6 +168,7 @@
     <Compile Include="Services\ApplicationUpdater.cs" />
     <Compile Include="Services\SeriesLocalDataService.cs" />
     <Compile Include="UtilityClasses\GifImage.cs" />
+    <Compile Include="UtilityClasses\Logger.cs" />
     <Compile Include="UtilityClasses\ObservableObject.cs" />
     <Compile Include="UtilityClasses\Scheduler.cs" />
     <Compile Include="ValueConverter\StatusToBorderConverter.cs" />
@@ -340,12 +342,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>update.vbs</TargetPath>
     </ContentWithTargetPath>
-    <None Include="ThirdPartyNotices.md">
+    <ContentWithTargetPath Include="ThirdPartyNotices.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>lib\ThirdPartyNotices.txt</TargetPath>
-    </None>
+      <TargetPath>lib\ThirdPartyNotices.md</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="PostBuildMacros">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">

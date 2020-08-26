@@ -11,10 +11,10 @@ namespace TvSeriesCalendar.ViewModels
 {
     public class UpdaterViewModel : ObservableObject
     {
-        private readonly SeriesLocalDataService _localDataService;
+        private readonly SeriesLocalDataService _seriesLocalDataService;
 
         private readonly Window _mainWindow;
-        private readonly SeriesOnlineDataService _onlineDataService;
+        private readonly SeriesOnlineDataService _seriesOnlineDataService;
         private string _newReleaseDateText = "";
         private List<TvSeries> _todayReleasedSeasonSeries;
         private string _todayReleaseText = "";
@@ -30,13 +30,11 @@ namespace TvSeriesCalendar.ViewModels
                 _mainWindow.Loaded += MainWindow_Loaded;
             }
 
-            _onlineDataService = onlineDataService;
-            _localDataService = localDataService;
+            _seriesOnlineDataService = onlineDataService;
+            _seriesLocalDataService = localDataService;
             CloseWindowCommand = new RelayCommand(CloseWindow);
             OpenMainProgramCommand = new RelayCommand(OpenMainProgram);
-#pragma warning disable 4014
             UpdateTvSeries();
-#pragma warning restore 4014
         }
 
         public ICommand CloseWindowCommand { get; }
@@ -68,10 +66,8 @@ namespace TvSeriesCalendar.ViewModels
             Window current = Application.Current.MainWindow;
             if (current != null)
                 current.Visibility = Visibility.Hidden;
-            Application.Current.MainWindow = new MainWindowView
-            {
-                DataContext = new MainWindowViewModel(_onlineDataService, _localDataService)
-            };
+            Application.Current.MainWindow = new MainWindowView();
+            Application.Current.MainWindow.DataContext = new MainWindowViewModel(_seriesOnlineDataService, _seriesLocalDataService);
             Application.Current.MainWindow.Show();
             current?.Close();
         }
@@ -92,7 +88,7 @@ namespace TvSeriesCalendar.ViewModels
         private async Task UpdateTvSeries()
         {
             (_updatedSeries, _todayReleasedSeasonSeries) =
-                await TvSeriesUpdater.Update(_localDataService, _onlineDataService, null);
+                await TvSeriesUpdater.Update(_seriesLocalDataService, _seriesOnlineDataService, null);
             if (_updatedSeries.Count > 0 || _todayReleasedSeasonSeries.Count > 0)
                 Notify();
             else

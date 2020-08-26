@@ -6,8 +6,10 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using Newtonsoft.Json;
 using TvSeriesCalendar.Properties;
+using TvSeriesCalendar.UtilityClasses;
 
 // ReSharper disable InconsistentNaming
 
@@ -31,7 +33,7 @@ namespace TvSeriesCalendar.Services
 
             List<Release> allReleases = JsonConvert.DeserializeObject<List<Release>>(githubReleases);
             allReleases.Sort((a, b) => string.CompareOrdinal(b.Tag_Name, a.Tag_Name));
-            Release latestRelease = allReleases.Find(release => release.PreRelease == false);
+            Release latestRelease = allReleases.Find(release => release.PreRelease == true);
             if (latestRelease == null)
                 return null;
             return string.CompareOrdinal(currentVersion, latestRelease.Tag_Name) < 0 ? latestRelease.Assets : null;
@@ -68,6 +70,7 @@ namespace TvSeriesCalendar.Services
             }
             catch (Exception ex)
             {
+                Logger.Exception(ex, "ApplicationUpdater.Update");
             }
         }
 
