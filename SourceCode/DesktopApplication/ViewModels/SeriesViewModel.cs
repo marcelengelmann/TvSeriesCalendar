@@ -9,8 +9,8 @@ namespace TvSeriesCalendar.ViewModels
 {
     public class SeriesViewModel : ObservableObject
     {
-        private readonly SeriesLocalDataService _localDataService;
-        private readonly SeriesOnlineDataService _onlineDataService;
+        private readonly SeriesLocalDataService _seriesLocalDataService;
+        private readonly SeriesOnlineDataService _seriesOnlineDataService;
         private TvSeries _selectedTvSeries;
         private bool _showDetailedView;
         private int _watchedSeasonsCounter;
@@ -18,14 +18,14 @@ namespace TvSeriesCalendar.ViewModels
 
         public SeriesViewModel(SeriesLocalDataService localDataService, SeriesOnlineDataService onlineDataService)
         {
-            _localDataService = localDataService;
-            _onlineDataService = onlineDataService;
+            _seriesLocalDataService = localDataService;
+            _seriesOnlineDataService = onlineDataService;
             CloseDetailedViewCommand = new RelayCommand(CloseDetailedView);
             CloseDetailedViewByXCommand = new RelayCommand(CloseDetailedViewByX);
             UpdateWatchedSeasonsCommand = new RelayCommand<string>(UpdateWatchedSeasons);
             SaveSelectedSeriesCommand = new RelayCommand(SaveSelectedSeries);
             RemoveSelectedSeriesCommand = new RelayCommand(RemoveSelectedSeries);
-            LoadSeries(_localDataService.GetTvSeries());
+            LoadSeries(_seriesLocalDataService.GetTvSeries());
         }
 
         public ICommand CloseDetailedViewCommand { get; }
@@ -88,7 +88,7 @@ namespace TvSeriesCalendar.ViewModels
         private void RemoveSelectedSeries()
         {
             Series.Remove(SelectedSeries);
-            _localDataService.Save(Series);
+            _seriesLocalDataService.Save(Series);
             CloseDetailedView();
         }
 
@@ -116,9 +116,9 @@ namespace TvSeriesCalendar.ViewModels
         {
             SelectedSeries.WatchedSeasons = WatchedSeasonsCounter;
             SelectedSeries.NextSeasonReleaseDate =
-                _onlineDataService.GetNextSeasonReleaseDate(SelectedSeries.TMDbId, WatchedSeasonsCounter);
+                _seriesOnlineDataService.GetNextSeasonReleaseDate(SelectedSeries.TMDbId, WatchedSeasonsCounter);
             CloseDetailedView();
-            _localDataService.Save(Series);
+            _seriesLocalDataService.Save(Series);
         }
     }
 }

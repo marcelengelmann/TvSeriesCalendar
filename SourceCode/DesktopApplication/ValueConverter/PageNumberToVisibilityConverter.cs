@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using TvSeriesCalendar.UtilityClasses;
 
 namespace TvSeriesCalendar.ValueConverter
 {
@@ -18,8 +19,9 @@ namespace TvSeriesCalendar.ValueConverter
                 currentPage = (int) values[1];
                 pagesNumber = (int) values[2];
             }
-            catch (InvalidCastException)
+            catch (InvalidCastException ex)
             {
+                Logger.Exception(ex, "PageNumberToVisibilityConverter");
                 return Visibility.Hidden;
             }
 

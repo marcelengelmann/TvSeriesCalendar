@@ -20,9 +20,9 @@ namespace TvSeriesCalendar.ViewModels
             {
                 Process.Start(url);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;
+                Logger.Exception(ex, "AboutViewModel.OpenWebsite");
             }
         }
     }

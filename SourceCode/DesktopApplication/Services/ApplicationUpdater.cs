@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
 using TvSeriesCalendar.Properties;
+using TvSeriesCalendar.UtilityClasses;
 
 // ReSharper disable InconsistentNaming
 
@@ -51,9 +52,6 @@ namespace TvSeriesCalendar.Services
 
             ZipFile.ExtractToDirectory("update.zip", "update\\");
             File.Delete("update.zip");
-            Console.WriteLine("//B //Nologo \"" + AppDomain.CurrentDomain.BaseDirectory +
-                              "update\\update.vbs\" " + Process.GetCurrentProcess().Id + " \"" +
-                              AppDomain.CurrentDomain.BaseDirectory + "\"");
             try
             {
                 Process scriptProc = new Process
@@ -72,6 +70,7 @@ namespace TvSeriesCalendar.Services
             }
             catch (Exception ex)
             {
+                Logger.Exception(ex, "ApplicationUpdater.Update");
             }
         }
 

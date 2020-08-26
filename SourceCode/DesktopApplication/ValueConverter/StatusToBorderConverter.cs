@@ -13,11 +13,16 @@ namespace TvSeriesCalendar.ValueConverter
             DateTime? nextSeasonReleaseDate = (DateTime?) values[1];
             if (nextSeasonReleaseDate != null)
                 return new SolidColorBrush(Colors.Green);
-            if (status == "Returning Series")
-                return new SolidColorBrush(Colors.Orange);
-            if (status == "Ended" || status == "Canceled")
-                return new SolidColorBrush(Colors.Red);
-            return new SolidColorBrush(Colors.Purple);
+            switch (status)
+            {
+                case "Returning Series":
+                    return new SolidColorBrush(Colors.Orange);
+                case "Ended":
+                case "Canceled":
+                    return new SolidColorBrush(Colors.Red);
+                default:
+                    return new SolidColorBrush(Colors.Purple);
+            }
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

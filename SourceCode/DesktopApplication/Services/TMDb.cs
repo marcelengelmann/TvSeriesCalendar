@@ -87,21 +87,17 @@ namespace TvSeriesCalendar.Services
         {
             FileInfo configJson = new FileInfo("settings\\config.json");
 
-            Console.WriteLine($@"Config file: {configJson.FullName}, Exists: {configJson.Exists}");
 
             if (configJson.Exists)
             {
-                Console.WriteLine(@"Using stored config");
                 string json = File.ReadAllText(configJson.FullName, Encoding.UTF8);
 
                 client.SetConfig(JsonConvert.DeserializeObject<TMDbConfig>(json));
             }
             else
             {
-                Console.WriteLine(@"Getting new config");
                 TMDbConfig config = await client.GetConfigAsync();
 
-                Console.WriteLine(@"Storing config");
                 string json = JsonConvert.SerializeObject(config);
                 File.WriteAllText(configJson.FullName, json, Encoding.UTF8);
             }

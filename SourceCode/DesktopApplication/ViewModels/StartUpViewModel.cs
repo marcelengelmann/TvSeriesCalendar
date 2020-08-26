@@ -11,9 +11,9 @@ namespace TvSeriesCalendar.ViewModels
 {
     public class StartUpViewModel : ObservableObject
     {
-        private readonly SeriesLocalDataService _localDataService;
+        private readonly SeriesLocalDataService _seriesLocalDataService;
         private readonly string _nextMainWindow;
-        private readonly SeriesOnlineDataService _onlineDataService;
+        private readonly SeriesOnlineDataService _seriesOnlineDataService;
         private Window _currentMainWindow;
         private int _downloadProgress;
         private string _statusText;
@@ -24,8 +24,8 @@ namespace TvSeriesCalendar.ViewModels
             _currentMainWindow = Application.Current.MainWindow;
             if (_currentMainWindow != null)
                 _currentMainWindow.Visibility = Visibility.Hidden;
-            _onlineDataService = new SeriesOnlineDataService();
-            _localDataService = new SeriesLocalDataService();
+            _seriesOnlineDataService = new SeriesOnlineDataService();
+            _seriesLocalDataService = new SeriesLocalDataService();
             string[] args = Environment.GetCommandLineArgs();
 
             switch (args.Length)
@@ -89,13 +89,14 @@ namespace TvSeriesCalendar.ViewModels
                 }
                 catch (Exception ex)
                 {
+                    Logger.Exception(ex, "StartUpViewModel.Updating");
                     MessageBox.Show("An Error occured during the update process");
                 }
                 return false;
             }
             StatusText = "Updating Tv Series";
-            await _onlineDataService.FetchTMDbConfig();
-            await TvSeriesUpdater.Update(_localDataService, _onlineDataService, SeriesUpdateProgress);
+            await _seriesOnlineDataService.FetchTMDbConfig();
+            await TvSeriesUpdater.Update(_seriesLocalDataService, _seriesOnlineDataService, SeriesUpdateProgress);
             return true;
         }
 
@@ -106,14 +107,14 @@ namespace TvSeriesCalendar.ViewModels
             {
                 Application.Current.MainWindow = new UpdaterView
                 {
-                    DataContext = new UpdaterViewModel(_onlineDataService, _localDataService)
+                    DataContext = new UpdaterViewModel(_seriesOnlineDataService, _seriesLocalDataService)
                 };
             }
             else //main
             {
                 Application.Current.MainWindow = new MainWindowView();
                 Application.Current.MainWindow.DataContext =
-                    new MainWindowViewModel(_onlineDataService, _localDataService);
+                    new MainWindowViewModel(_seriesOnlineDataService, _seriesLocalDataService);
                 Application.Current.MainWindow.Show();
             }
 
@@ -129,7 +130,7 @@ namespace TvSeriesCalendar.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Logger.Exception(ex, "StartUpViewModel.InitializeRequiredData");
             }
 
             Directory.CreateDirectory("settings");

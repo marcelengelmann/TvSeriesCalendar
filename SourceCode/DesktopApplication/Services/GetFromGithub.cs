@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using TvSeriesCalendar.UtilityClasses;
 
 namespace TvSeriesCalendar.Services
 {
@@ -18,8 +19,9 @@ namespace TvSeriesCalendar.Services
             {
                 return await client.DownloadStringTaskAsync(URL);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Exception(ex, "GetFromGithub.DownloadAsString");
                 return "";
             }
         }
