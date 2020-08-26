@@ -31,15 +31,14 @@
                         </TextBlock.Visibility>
                     </TextBlock>
                     <TextBox x:Name="SearchBox" Background="Transparent" VerticalAlignment="Center" BorderThickness="0"
-                             Text="{Binding SearchText}">
+                             Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.InputBindings>
-                            <KeyBinding Key="Return" Command="{Binding StartNewSearchCommand, Mode=OneWay}" />
-                            <!--Doesnt work-->
+                            <KeyBinding Key="Enter" Command="{Binding StartNewSearchCommand}" />
                         </TextBox.InputBindings>
                     </TextBox>
                 </Grid>
             </Grid>
-            <Button Grid.Row="0" Grid.Column="3" Content="Search" Command="{Binding StartNewSearchCommand}" />
+            <Button Grid.Row="0" Grid.Column="3" Content="Search" Command="{Binding StartNewSearchCommand}" Height="30" VerticalAlignment="Top" />
             <ListView Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding SearchSeries}"
                       SelectedItem="{Binding SelectedSeries}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemsPanel>

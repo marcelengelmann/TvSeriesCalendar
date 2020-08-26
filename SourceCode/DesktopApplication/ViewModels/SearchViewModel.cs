@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using TvSeriesCalendar.Models;
@@ -9,8 +10,8 @@ namespace TvSeriesCalendar.ViewModels
 {
     public class SearchViewModel : ObservableObject
     {
-        private readonly SeriesLocalDataService _localDataService;
-        private readonly SeriesOnlineDataService _onlineDataService;
+        private readonly SeriesLocalDataService _seriesLocalDataService;
+        private readonly SeriesOnlineDataService _seriesOnlineDataService;
         private int _currentPageNumber;
         private int _searchPagesNumber;
         private string _searchText;
@@ -21,14 +22,14 @@ namespace TvSeriesCalendar.ViewModels
 
         public SearchViewModel(SeriesLocalDataService dataService, SeriesOnlineDataService TMDbId)
         {
-            _localDataService = dataService;
+            _seriesLocalDataService = dataService;
             SearchText = "";
             StartNewSearchCommand = new RelayCommand(StartNewSearch);
             UpdateSearchPageNumberCommand = new RelayCommand<string>(UpdateSearchPageNumber);
             UpdateWatchedSeasonsCommand = new RelayCommand<string>(UpdateWatchedSeasons);
             AddSelectedSeriesCommand = new RelayCommand(AddSelectedSeries);
             CloseDetailedViewCommand = new RelayCommand(CloseDetailedView);
-            _onlineDataService = TMDbId;
+            _seriesOnlineDataService = TMDbId;
             SearchSeries = new ObservableCollection<TvSeries>();
         }
 
@@ -116,7 +117,7 @@ namespace TvSeriesCalendar.ViewModels
 
         private async void StartSearch()
         {
-            SearchPagesNumber = await _onlineDataService.SearchForSeries(SearchText, CurrentPageNumber, SearchSeries);
+            SearchPagesNumber = await _seriesOnlineDataService.SearchForSeries(SearchText, CurrentPageNumber, SearchSeries);
         }
 
         private void UpdateSearchPageNumber(string arithChar)
@@ -134,15 +135,15 @@ namespace TvSeriesCalendar.ViewModels
 
         private void AddSelectedSeries()
         {
-            ObservableCollection<TvSeries> tvSeries = _localDataService.GetTvSeries();
+            ObservableCollection<TvSeries> tvSeries = _seriesLocalDataService.GetTvSeries();
             if (tvSeries.All(e => e.TMDbId != SelectedSeries.TMDbId))
             {
                 if (WatchedSeasonsCounter > 0)
                     SelectedSeries.NextSeasonReleaseDate =
-                        _onlineDataService.GetNextSeasonReleaseDate(SelectedSeries.TMDbId, WatchedSeasonsCounter);
+                        _seriesOnlineDataService.GetNextSeasonReleaseDate(SelectedSeries.TMDbId, WatchedSeasonsCounter);
                 SelectedSeries.WatchedSeasons = WatchedSeasonsCounter;
                 tvSeries.Add(SelectedSeries);
-                _localDataService.Save(tvSeries);
+                _seriesLocalDataService.Save(tvSeries);
             }
 
             CloseDetailedView();
