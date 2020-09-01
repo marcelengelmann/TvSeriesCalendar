@@ -4,7 +4,6 @@
 * Search and sort functionality for the series tab
 * A simple autocomplete for the search page
 * Crash Reporter
-### Fixed
 ### Changed
 * Complete rework of the user interface
 ## 0.0.3
