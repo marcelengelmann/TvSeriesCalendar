@@ -10,7 +10,7 @@ namespace TvSeriesCalendar.Services
     {
         public static async Task<(List<TvSeries> _updatedSeries, List<TvSeries> _todayReleasedSeasonSeries)> Update(
             SeriesLocalDataService localDataService, SeriesOnlineDataService onlineDataService,
-            Action<int> progressUpdate)
+            Action<int, int, int> progressUpdate)
         {
             List<TvSeries> series = new List<TvSeries>(localDataService.GetTvSeries());
             List<TvSeries> updatedSeries = new List<TvSeries>();
@@ -26,7 +26,7 @@ namespace TvSeriesCalendar.Services
                     if (series[i].NextSeasonReleaseDate != null)
                         updatedSeries.Add(series[i]);
                 int percentage = (int) ((i + 1) / (double) series.Count * 100);
-                progressUpdate?.Invoke(percentage);
+                progressUpdate?.Invoke(percentage, series.Count, i);
             }
 
             localDataService.Save(new ObservableCollection<TvSeries>(series));

@@ -17,6 +17,7 @@ namespace TvSeriesCalendar.ViewModels
         private Window _currentMainWindow;
         private int _downloadProgress;
         private string _statusText;
+        private string _updateProgressText;
 
 
         public StartUpViewModel()
@@ -26,8 +27,9 @@ namespace TvSeriesCalendar.ViewModels
                 _currentMainWindow.Visibility = Visibility.Hidden;
             _seriesOnlineDataService = new SeriesOnlineDataService();
             _seriesLocalDataService = new SeriesLocalDataService();
-            string[] args = Environment.GetCommandLineArgs();
+            UpdateProgressText = "";
 
+            string[] args = Environment.GetCommandLineArgs();
             switch (args.Length)
             {
                 case 2 when args[1] == "update":
@@ -71,6 +73,12 @@ namespace TvSeriesCalendar.ViewModels
             set => OnPropertyChanged(ref _downloadProgress, value);
         }
 
+        public string UpdateProgressText
+        {
+            get => _updateProgressText;
+            set => OnPropertyChanged(ref _updateProgressText, value);
+        }
+
         public async Task<bool> Updating()
         {
             InitializeRequiredData();
@@ -78,7 +86,7 @@ namespace TvSeriesCalendar.ViewModels
             ApplicationUpdater.Assets[] assets = await ApplicationUpdater.NewVersionExists();
             if (assets != null)
             {
-                StatusText = "Downloading Updates";
+                StatusText = "Downloading Update";
                 try
                 {
                     await ApplicationUpdater.Update(assets, DownloadProgressUpdate);
@@ -87,7 +95,8 @@ namespace TvSeriesCalendar.ViewModels
                 catch (Exception ex)
                 {
                     Logger.Exception(ex, "StartUpViewModel.Updating");
-                    MessageBox.Show("An Error occured during the update process");
+                    CrashReportHandler.ReportCrash(ex, "StartUpViewModel.Updating");
+                    Environment.Exit(1);
                 }
                 return false;
             }
@@ -99,6 +108,7 @@ namespace TvSeriesCalendar.ViewModels
 
         private void ConfigLoaded()
         {
+            return;
             _currentMainWindow = Application.Current.MainWindow;
             if (_nextMainWindow == "updater")
             {
@@ -141,11 +151,27 @@ namespace TvSeriesCalendar.ViewModels
         private void DownloadProgressUpdate(object sender, DownloadProgressChangedEventArgs e)
         {
             DownloadProgress = e.ProgressPercentage;
+            UpdateProgressText = $"{BytesToHumanReadable(e.BytesReceived)} / {BytesToHumanReadable(e.TotalBytesToReceive)}   {e.UserState}";
         }
 
-        private void SeriesUpdateProgress(int progressPercentage)
+        private string BytesToHumanReadable(double bytes)
+        {
+            string[] suffixes = {" B", " KB", " MB"};
+            int suffixIndex = 0;
+            while (suffixIndex < suffixes.Length && bytes > 1024)
+            {
+                bytes /= 1024;
+                suffixIndex++;
+            }
+
+            return Math.Round(bytes, 2) + suffixes[suffixIndex];
+
+        }
+
+        private void SeriesUpdateProgress(int progressPercentage, int total, int current)
         {
             DownloadProgress = progressPercentage;
+            UpdateProgressText = $"{current} / {total}";
         }
     }
 }
