@@ -4,84 +4,109 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TvSeriesCalendar.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Black">
+    <!-- Used to Center the Detailed View With space outside -->
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="100" />
-            <RowDefinition Height="40" />
+            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition ></RowDefinition>
         </Grid.RowDefinitions>
-        <!-- Series Header Informations -->
-        <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-               Source="{Binding SelectedSeries.ImagePath, FallbackValue={StaticResource defaultSeriesImage}, TargetNullValue={StaticResource defaultSeriesImage}, Converter={StaticResource PathToImage}}" />
-        <Button Grid.Row="0" Grid.Column="1" Height="40" Width="40" Background="Black" HorizontalAlignment="Right"
-                VerticalAlignment="Top" Command="{Binding CloseDetailedViewCommand}">
-            <Image Source="/TvSeriesCalendar;component/Resources/whiteX.png" />
-        </Button>
-        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SelectedSeries.Name}"
-                   Foreground="White" TextAlignment="Center" VerticalAlignment="Top" TextWrapping="Wrap"
-                   FontFamily="Britannic Bold" FontSize="14" Height="16" />
-        <!-- Series Details Informations -->
-        <Grid Grid.Row="2" Grid.Column="0">
+
+
+
+        <!-- Content Grid -->
+        <Grid Grid.Column="1" Grid.Row="1" Background="#DD000000" MinWidth="400" MinHeight="400">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <!-- Left Side Labels-->
-            <Label Grid.Row="0" Content="WatchedSeasons" Foreground="White" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" FontFamily="Britannic Bold" FontSize="14" />
-            <Label Grid.Row="1" Content="NextSeasonReleaseDates" Foreground="White" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" FontFamily="Britannic Bold" FontSize="14" />
-            <Label Grid.Row="2" Content="NumberReleasedSeasons" Foreground="White" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" FontFamily="Britannic Bold" FontSize="14" />
-            <Label Grid.Row="3" Content="Status" Foreground="White" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" FontFamily="Britannic Bold" FontSize="14" />
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <!-- Right Side Informations-->
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Background="DarkGray" HorizontalAlignment="Right"
-                        Command="{Binding UpdateWatchedSeasonsCommand}" CommandParameter="-">
-                    <Image Source="/TvSeriesCalendar;component/Resources/whiteMinus.png" />
-                </Button>
-                <TextBlock Grid.Column="1" Text="{Binding WatchedSeasonsCounter}" Foreground="White"
-                           TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
-                           FontFamily="Britannic Bold" FontSize="14" Width="50" />
-                <Button Grid.Column="2" Background="DarkGray" HorizontalAlignment="Left"
-                        Command="{Binding UpdateWatchedSeasonsCommand}" CommandParameter="+">
-                    <Image Source="/TvSeriesCalendar;component/Resources/whitePlus.png" />
-                </Button>
+
+            <!-- Close Button -->
+            <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right"
+                    VerticalAlignment="Top" Command="{Binding CloseDetailedViewCommand}" Background="Transparent" BorderThickness="0" Padding="3" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Style="{DynamicResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Kind="CloseOutline">
+                    <materialDesign:PackIcon.LayoutTransform>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"></ScaleTransform>
+                    </materialDesign:PackIcon.LayoutTransform>
+                </materialDesign:PackIcon>
+            </Button>
+
+            <!-- Left Column -->
+            <Grid Grid.Column="0" Grid.Row="1" Margin="10 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0"
+                       Source="{Binding SelectedSeries.ImagePath, FallbackValue={StaticResource defaultSeriesImage}, TargetNullValue={StaticResource defaultSeriesImage}, Converter={StaticResource PathToImage}}" />
             </Grid>
-            <TextBlock Grid.Row="1"
-                       Text="{Binding SelectedSeries.NextSeasonReleaseDate, Converter={StaticResource DateTimeToDate}}"
-                       Foreground="White" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
-                       FontFamily="Britannic Bold" FontSize="14" />
-            <TextBlock Grid.Row="2" Text="{Binding SelectedSeries.NumberReleasedSeasons}" Foreground="White"
-                       TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
-                       FontFamily="Britannic Bold" FontSize="14" />
-            <TextBlock Grid.Row="3" Text="{Binding SelectedSeries.Status}" Foreground="White" TextAlignment="Center"
-                       VerticalAlignment="Center" TextWrapping="Wrap" FontFamily="Britannic Bold" FontSize="14" />
+
+            <!-- Right Column -->
+            <Grid Grid.Column="1" Grid.Row="1">
+                <StackPanel>
+                    <TextBlock Text="{Binding SelectedSeries.Name}"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}" TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWithOverflow"
+                               FontWeight="Black" FontSize="24" MaxHeight="100">
+                    </TextBlock>
+                    <!-- Spacing Grid -->
+                    <Grid Margin="0 40 0 0"></Grid>
+                    <!-- Information -->
+                    <Label Content="Next Season Release Date" Style="{StaticResource SeriesDetailedViewInformationLabel}"/>
+                    <TextBlock Text="{Binding SelectedSeries.NextSeasonReleaseDate, Converter={StaticResource DateTimeToDate}}"
+                               Style="{StaticResource SeriesDetailedViewInformationTextBlock}"/>
+                    <Label Content="Status" Style="{StaticResource SeriesDetailedViewInformationLabel}"/>
+                    <TextBlock Text="{Binding SelectedSeries.Status}" 
+                               Style="{StaticResource SeriesDetailedViewInformationTextBlock}"/>
+                    <Label Content="Number of Released Seasons" Style="{StaticResource SeriesDetailedViewInformationLabel}"/>
+                    <TextBlock Text="{Binding SelectedSeries.NumberReleasedSeasons}" 
+                               Style="{StaticResource SeriesDetailedViewInformationTextBlock}"/>
+                    <Label Content="Number of Watched Seasons" Style="{StaticResource SeriesDetailedViewInformationLabel}"/>
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                Command="{Binding UpdateWatchedSeasonsCommand}" CommandParameter="-" Padding="0" Width="30" Height="30" FontWeight="Bold" Content="-">
+                        </Button>
+                        <TextBlock Grid.Column="1" Text="{Binding WatchedSeasonsCounter}"
+                                   Style="{StaticResource SeriesDetailedViewInformationTextBlock}" Margin="0" HorizontalAlignment="Center"/>
+                        <Button Grid.Column="2"
+                                Command="{Binding UpdateWatchedSeasonsCommand}" CommandParameter="+" Padding="0" Width="30" Height="30" FontWeight="Bold" Content="+">
+                        </Button>
+                    </Grid>
+                    <!-- Spacer -->
+                    <Border Margin="0 20" BorderThickness="0.2" BorderBrush="{DynamicResource PrimaryHueLightBrush}"></Border>
+                    <!-- Action Buttons -->
+                    <Grid>
+                            <Button Background="Transparent" BorderBrush="Green"
+                                    Style="{StaticResource SeriesDetailedViewActionButton}"
+                                    Command="{Binding AddSelectedSeriesCommand}">
+                                <StackPanel>
+                                    <materialDesign:PackIcon Kind="ContentSave" HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon.LayoutTransform>
+                                            <ScaleTransform ScaleX="1.6" ScaleY="1.6"></ScaleTransform>
+                                        </materialDesign:PackIcon.LayoutTransform>
+                                </materialDesign:PackIcon>
+                                    <TextBlock Text="Add" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                    </Grid>
+                </StackPanel>
+            </Grid>
         </Grid>
-        <Button Grid.Row="3" Grid.ColumnSpan="2" Width="80" HorizontalAlignment="Center" Background="DarkGreen"
-                Foreground="White" Content="Add" FontSize="20" Command="{Binding AddSelectedSeriesCommand}" />
     </Grid>
 </UserControl>

@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace TvSeriesCalendar.ValueConverter
@@ -9,6 +13,8 @@ namespace TvSeriesCalendar.ValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values.Any(value => value == DependencyProperty.UnsetValue))
+                return null;
             string status = (string) values[0];
             DateTime? nextSeasonReleaseDate = (DateTime?) values[1];
             if (nextSeasonReleaseDate != null)

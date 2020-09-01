@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TMDbLib.Client;
@@ -55,7 +56,7 @@ namespace TvSeriesCalendar.Services
             TvShow result = await Client.GetTvShowAsync(TMDbId, TvShowMethods.Images);
             DateTime? nextSeasonRelease = null;
             if (result.NumberOfSeasons >= nextSeason)
-                nextSeasonRelease = result.Seasons.First(item => item.SeasonNumber == nextSeason).AirDate;
+                nextSeasonRelease = result.Seasons.Find(item => item.SeasonNumber == nextSeason)?.AirDate;
             return (result.Name, result.NumberOfSeasons, result.Status, nextSeasonRelease, result.Images);
         }
 
@@ -101,6 +102,11 @@ namespace TvSeriesCalendar.Services
                 string json = JsonConvert.SerializeObject(config);
                 File.WriteAllText(configJson.FullName, json, Encoding.UTF8);
             }
+        }
+
+        public async Task<List<SearchTv>> GetSearchSuggestions(string searchText, CancellationToken cancellationToken)
+        {
+            return (await Client.SearchTvShowAsync(searchText, cancellationToken: cancellationToken)).Results;
         }
     }
 }

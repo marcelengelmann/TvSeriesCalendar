@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
@@ -74,6 +75,12 @@ namespace TvSeriesCalendar.Services
             }
 
             series.ImagePath = savePath;
+        }
+
+        public async Task<ObservableCollection<string>> GetSearchSuggestions(string searchText, CancellationToken cancellationToken)
+        {
+            List<SearchTv> result = await _client.GetSearchSuggestions(searchText, cancellationToken);
+            return new ObservableCollection<string>(result.ConvertAll(item => item.Name));
         }
     }
 }

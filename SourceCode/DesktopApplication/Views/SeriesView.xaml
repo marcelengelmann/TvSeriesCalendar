@@ -4,24 +4,107 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:v="clr-namespace:TvSeriesCalendar.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightGray">
-        <ListView ItemsSource="{Binding Series}" SelectedItem="{Binding SelectedSeries}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <v:SeriesButtonView />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <v:SeriesDetailedView
-            Visibility="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}"
-            d:IsHidden="True" />
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <!--TopBar-->
+            <Grid Grid.Row="0" Background="#202020">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <!--Search Bar-->
+                <TextBox Grid.Column="1" Background="Black" VerticalAlignment="Center"
+                         Text="{Binding FilterByNameText, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Find..." materialDesign:HintAssist.HintOpacity="0.7"
+                         Foreground="White" />
+                <Button Grid.Column="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                        Width="20" Height="20" Foreground="White" BorderBrush="{x:Null}" Background="{x:Null}"
+                        HorizontalAlignment="Right">
+                    <materialDesign:PackIcon Kind="Search" />
+                </Button>
+                <!--Filter Button-->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 5 0">
+                    <Button Command="{Binding SortByAddedOrderCommand}"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30"
+                            Height="30" BorderBrush="{x:Null}" Background="{x:Null}" ToolTip="Default Order"
+                            ToolTipService.InitialShowDelay="200">
+                        <materialDesign:PackIcon
+                            Kind="{Binding SortByAddedOrderPackIconKind}"
+                            Style="{StaticResource SeriesSortButton}"
+                            IsEnabled="{Binding ActiveSortFunction, Converter={StaticResource ActiveSearchFunctionToBoolean}, ConverterParameter=SortByAddedOrder}" />
+                    </Button>
+                    <Button Command="{Binding SortByNameCommand}"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30"
+                            Height="30" BorderBrush="{x:Null}" Background="{x:Null}" ToolTip="Sort By Name"
+                            ToolTipService.InitialShowDelay="200">
+                        <materialDesign:PackIcon Kind="{Binding SortByNamePackIconKind}"
+                                                 Style="{StaticResource SeriesSortButton}"
+                                                 IsEnabled="{Binding ActiveSortFunction, Converter={StaticResource ActiveSearchFunctionToBoolean}, ConverterParameter=SortByName}" />
+                    </Button>
+                    <Button Command="{Binding SortByReleaseDateCommand}"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30"
+                            Height="30" BorderBrush="{x:Null}" Background="{x:Null}" ToolTip="Sort By Release Date"
+                            ToolTipService.InitialShowDelay="200">
+                        <materialDesign:PackIcon Kind="{Binding SortByReleaseDatePackIconKind}"
+                                                 Style="{StaticResource SeriesSortButton}"
+                                                 IsEnabled="{Binding ActiveSortFunction, Converter={StaticResource ActiveSearchFunctionToBoolean}, ConverterParameter=SortByReleaseDate}" />
+                    </Button>
+                    <Button Command="{Binding SortByStatusCommand}"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30"
+                            Height="30" BorderBrush="{x:Null}" Background="{x:Null}" ToolTip="Sort By Status"
+                            ToolTipService.InitialShowDelay="200">
+                        <materialDesign:PackIcon Kind="{Binding SortByStatusPackIconKind}"
+                                                 Style="{StaticResource SeriesSortButton}"
+                                                 IsEnabled="{Binding ActiveSortFunction, Converter={StaticResource ActiveSearchFunctionToBoolean}, ConverterParameter=SortByStatus}" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <!--Series Display-->
+            <ListView Grid.Row="1" ItemsSource="{Binding FilteredSeries, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding SelectedSeries}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ItemContainerStyle="{StaticResource ListViewItemSeriesStyle}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" Margin="0 10 0 0" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <v:SeriesButtonView />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!--Blur Style if detailed view is shown-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger
+                            Binding="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}"
+                            Value="Visible">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <BlurEffect Radius="6" RenderingBias="Quality" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Opacity" Value="0.5"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+        </Grid>
+        <Grid>
+            <v:SeriesDetailedView
+                Visibility="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}"/>
+        </Grid>
     </Grid>
 </UserControl>

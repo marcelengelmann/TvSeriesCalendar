@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using TvSeriesCalendar.Models;
 using TvSeriesCalendar.Services;
@@ -19,6 +23,9 @@ namespace TvSeriesCalendar.ViewModels
         private bool _showDetailedView;
         private bool _showSearchLabel;
         private int _watchedSeasonsCounter;
+        private bool _searchIsNotNotLocked;
+        private CancellationTokenSource _cancelSearchSuggestionToken;
+        private ObservableCollection<string> _searchSuggestions;
 
         public SearchViewModel(SeriesLocalDataService dataService, SeriesOnlineDataService TMDbId)
         {
@@ -31,6 +38,10 @@ namespace TvSeriesCalendar.ViewModels
             CloseDetailedViewCommand = new RelayCommand(CloseDetailedView);
             _seriesOnlineDataService = TMDbId;
             SearchSeries = new ObservableCollection<TvSeries>();
+            SearchIsNotLocked = true;
+            _cancelSearchSuggestionToken = new CancellationTokenSource();
+            _searchSuggestions = new ObservableCollection<string>();
+
         }
 
         public ICommand StartNewSearchCommand { get; }
@@ -63,7 +74,25 @@ namespace TvSeriesCalendar.ViewModels
                 OnPropertyChanged(ref _searchText, value);
                 if (value.Length == 0)
                     ShowSearchLabel = true;
+                if (SearchSeries?.Count > 0)
+                    SearchSeries.Clear(); 
+                if (value.Length > 0)
+                {
+                    _cancelSearchSuggestionToken?.Cancel();
+                    _cancelSearchSuggestionToken = new CancellationTokenSource();
+                    Task.Run(async () => SearchSuggestions = await _seriesOnlineDataService.GetSearchSuggestions(value, _cancelSearchSuggestionToken.Token));
+                }
+                if (SearchPagesNumber > 0)
+                    SearchPagesNumber = 0;
+                if (CurrentPageNumber > 0)
+                    CurrentPageNumber = 0;
             }
+        }
+
+        public ObservableCollection<string> SearchSuggestions
+        {
+            get => _searchSuggestions;
+            set => OnPropertyChanged(ref _searchSuggestions, value);
         }
 
         public bool ShowSearchLabel
@@ -75,12 +104,7 @@ namespace TvSeriesCalendar.ViewModels
         public int CurrentPageNumber
         {
             get => _currentPageNumber;
-            set
-            {
-                OnPropertyChanged(ref _currentPageNumber, value);
-                SearchSeries.Clear();
-                StartSearch();
-            }
+            set => OnPropertyChanged(ref _currentPageNumber, value);
         }
 
         public int SearchPagesNumber
@@ -95,6 +119,12 @@ namespace TvSeriesCalendar.ViewModels
             set => OnPropertyChanged(ref _watchedSeasonsCounter, value);
         }
 
+        public bool SearchIsNotLocked
+        {
+            get => _searchIsNotNotLocked;
+            set => OnPropertyChanged(ref _searchIsNotNotLocked, value);
+        }
+
         private void OpenDetailedView()
         {
             WatchedSeasonsCounter = 0;
@@ -107,28 +137,35 @@ namespace TvSeriesCalendar.ViewModels
             SelectedSeries = null;
         }
 
-        private void StartNewSearch()
+        private async void StartNewSearch()
         {
             if (SearchText.Length == 0)
                 return;
-            SearchPagesNumber = 1;
             CurrentPageNumber = 1;
+            await StartSearch();
         }
 
-        private async void StartSearch()
+        private async Task StartSearch()
         {
+            SearchIsNotLocked = false;
+
+            SearchSeries?.Clear();
             SearchPagesNumber = await _seriesOnlineDataService.SearchForSeries(SearchText, CurrentPageNumber, SearchSeries);
+
+            SearchIsNotLocked = true;
         }
 
-        private void UpdateSearchPageNumber(string arithChar)
+        private async void UpdateSearchPageNumber(string arithChar)
         {
             switch (arithChar)
             {
                 case "+":
                     CurrentPageNumber++;
+                    await StartSearch();
                     break;
                 case "-":
                     CurrentPageNumber--;
+                    await StartSearch();
                     break;
             }
         }

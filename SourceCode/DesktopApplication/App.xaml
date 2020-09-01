@@ -5,33 +5,184 @@
              xmlns:vm="clr-namespace:TvSeriesCalendar.ViewModels"
              xmlns:v="clr-namespace:TvSeriesCalendar.Views"
              xmlns:vc="clr-namespace:TvSeriesCalendar.ValueConverter"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="Views/StartUpView.xaml">
     <Application.Resources>
-        <!--Binding ViewModels to Views-->
-        <DataTemplate DataType="{x:Type vm:SeriesViewModel}">
-            <v:SeriesView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:SearchViewModel}">
-            <v:SearchView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
-            <v:SettingsView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AboutViewModel}">
-            <v:AboutView />
-        </DataTemplate>
-        <!--Value Converters-->
-        <vc:PathToImageConverter x:Key="PathToImage" />
-        <vc:DateTimeToDateConverter x:Key="DateTimeToDate" />
-        <vc:SelectedSeriesToVisibilityConverter x:Key="SelectedSeriesToVisibility" />
-        <vc:SearchBoxWatermarkVisibilityConverter x:Key="WatermarkVisibility" />
-        <vc:PageNumberToVisibilityConverter x:Key="PageVisibility" />
-        <vc:StatusToBorderConverter x:Key="StatusToBorder" />
-        <!--Images-->
-        <BitmapImage x:Key="defaultSeriesImage" UriSource="/Resources/defaultSeries.png" />
-        <!--Styles-->
-        <Style x:Key="NavigationButton" TargetType="Button">
-            <Setter Property="Background" Value="DarkGray" />
-        </Style>
+        <!--MaterialDesign Resources-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BitmapImage x:Key="defaultSeriesImage" UriSource="/Resources/defaultSeries.png" />
+            <!--Binding ViewModels to Views-->
+            <DataTemplate DataType="{x:Type vm:SeriesViewModel}">
+                <v:SeriesView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SearchViewModel}">
+                <v:SearchView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+                <v:SettingsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:AboutViewModel}">
+                <v:AboutView />
+            </DataTemplate>
+            <!--Value Converters-->
+            <vc:PathToImageConverter x:Key="PathToImage" />
+            <vc:DateTimeToDateConverter x:Key="DateTimeToDate" />
+            <vc:SelectedSeriesToVisibilityConverter x:Key="SelectedSeriesToVisibility" />
+            <vc:PageNumberToVisibilityConverter x:Key="PageToVisibility" />
+            <vc:StatusToBorderConverter x:Key="StatusToBorder" />
+            <vc:NavigationCurrentViewToDefaultConverter x:Key="NavigationCurrentViewToDefault" />
+            <vc:ActiveSearchFunctionToBooleanConverter x:Key="ActiveSearchFunctionToBoolean" />
+            <!--Styles-->
+            <Style x:Key="NavigationButton" TargetType="Button">
+                <Setter Property="Foreground" Value="LightGray" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="BorderBrush" Value="White" />
+                <Setter Property="BorderThickness" Value="0 3 5 2"></Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="White" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="White"></DropShadowEffect>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsDefault" Value="True">
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="White"></DropShadowEffect>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ListViewItemSeriesStyle" TargetType="ListViewItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate  TargetType="{x:Type ListViewItem}">
+                            <Border x:Name="Bd"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="Transparent"
+                                    Padding="5"
+                                    SnapsToDevicePixels="True">
+                                <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                      Content="{TemplateBinding Content}"
+                                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <ContentPresenter.Effect>
+                                        <DropShadowEffect BlurRadius="20" Opacity="1" ShadowDepth="10" Color="Black"></DropShadowEffect>
+                                    </ContentPresenter.Effect>
+                                </ContentPresenter>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="Bd" Value="{DynamicResource PrimaryHueDarkBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="SeriesSortButton" TargetType="materialDesign:PackIcon">
+                <Setter Property="Foreground" Value="White"></Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryHueDarkBrush}"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="White"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="SeriesDetailedViewInformationLabel" TargetType="{x:Type Label}">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueLightBrush}"></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                <Setter Property="FontWeight" Value="Bold"></Setter>
+                <Setter Property="FontSize" Value="16"></Setter>
+            </Style>
+            <Style x:Key="SeriesDetailedViewInformationTextBlock" TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="White"></Setter>
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                <Setter Property="FontSize" Value="14"></Setter>
+                <Setter Property="FontWeight" Value="Medium"></Setter>
+            </Style>
+            <Style x:Key="SeriesDetailedViewActionButton" TargetType="{x:Type Button}">
+                <Setter Property="Height" Value="60"></Setter>
+                <Setter Property="Width" Value="60"></Setter>
+                <Setter Property="FontSize" Value="14"></Setter>
+                <Setter Property="Padding" Value="2"></Setter>
+                <Setter Property="Foreground" Value="White"></Setter>
+                <Setter Property="Cursor" Value="Hand"></Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Background="Transparent">
+                                <ContentPresenter ContentTemplate="{TemplateBinding Content}" VerticalAlignment="Center" HorizontalAlignment="Center"></ContentPresenter>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=BorderBrush}"></Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--
+            <Button Height="60" Width="60" Margin="0 0 100 0" Background="Transparent" BorderBrush="Red"
+                                FontSize="14" Padding="0"
+                                Command="{Binding RemoveSelectedSeriesCommand}">
+                            <StackPanel>
+                                <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center">
+                                    <materialDesign:PackIcon.LayoutTransform>
+                                        <ScaleTransform ScaleX="1.6" ScaleY="1.6"></ScaleTransform>
+                                    </materialDesign:PackIcon.LayoutTransform>
+                                </materialDesign:PackIcon>
+                                <TextBlock Text="Delete" HorizontalAlignment="Center">
+                                </TextBlock>
+                            </StackPanel>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <ContentPresenter Content="{TemplateBinding Content}"></ContentPresenter>
+                                                <ControlTemplate.Triggers>
+                                                    
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+            -->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

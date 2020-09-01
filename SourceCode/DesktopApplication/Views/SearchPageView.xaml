@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:v="clr-namespace:TvSeriesCalendar.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:behaviors="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Gray">
+    <Grid>
         <!-- Default View-->
         <Grid>
             <Grid.RowDefinitions>
@@ -20,30 +22,45 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,2">
-                <Grid Background="White">
-                    <TextBlock Text="Search for Series..." VerticalAlignment="Center">
-                        <TextBlock.Visibility>
-                            <MultiBinding Converter="{StaticResource WatermarkVisibility}">
-                                <Binding ElementName="SearchBox" Path="Text.IsEmpty" />
-                                <Binding ElementName="SearchBox" Path="IsFocused" />
-                            </MultiBinding>
-                        </TextBlock.Visibility>
-                    </TextBlock>
-                    <TextBox x:Name="SearchBox" Background="Transparent" VerticalAlignment="Center" BorderThickness="0"
-                             Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding StartNewSearchCommand}" />
-                        </TextBox.InputBindings>
-                    </TextBox>
-                </Grid>
+
+            <!--Search Bar-->
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Background="#202020">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox   Grid.Column="1" Background="Black" VerticalAlignment="Center"
+                          materialDesign:HintAssist.Hint="Search for Series..."
+                          materialDesign:HintAssist.HintOpacity="0.7" Foreground="White"
+                          Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding SearchIsNotLocked}"
+                          behaviors:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding SearchSuggestions}"
+                          behaviors:AutoCompleteBehavior.AutoCompleteStringComparison="CurrentCultureIgnoreCase">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding StartNewSearchCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Grid.Column="1" Command="{Binding StartNewSearchCommand}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="20" Height="20"
+                        Foreground="White" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalAlignment="Right">
+                    <materialDesign:PackIcon Kind="Search" />
+                </Button>
             </Grid>
-            <Button Grid.Row="0" Grid.Column="3" Content="Search" Command="{Binding StartNewSearchCommand}" Height="30" VerticalAlignment="Top" />
-            <ListView Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding SearchSeries}"
-                      SelectedItem="{Binding SelectedSeries}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+            <!-- Search Results-->
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="3 3 3 3"
+                    Margin="-2" ClipToBounds="True">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" />
+                </Border.Effect>
+            </Border>
+            <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" ItemsSource="{Binding SearchSeries}"
+                      SelectedItem="{Binding SelectedSeries}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ItemContainerStyle="{StaticResource ListViewItemSeriesStyle}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
+                        <WrapPanel Orientation="Horizontal" Margin="0 10 0 0" />
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
@@ -52,6 +69,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!--Search Result Page Navigation -->
             <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -59,9 +77,9 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Content="Previous" Command="{Binding UpdateSearchPageNumberCommand}"
-                        CommandParameter="-">
+                        CommandParameter="-" IsEnabled="{Binding SearchIsNotLocked}">
                     <Button.Visibility>
-                        <MultiBinding Converter="{StaticResource PageVisibility}">
+                        <MultiBinding Converter="{StaticResource PageToVisibility}">
                             <Binding Source="Previous" />
                             <Binding Path="CurrentPageNumber" />
                             <Binding Path="SearchPagesNumber" />
@@ -71,7 +89,7 @@
                 <Label Grid.Column="1" Content="{Binding CurrentPageNumber}" HorizontalAlignment="Center"
                        VerticalAlignment="Center">
                     <Label.Visibility>
-                        <MultiBinding Converter="{StaticResource PageVisibility}">
+                        <MultiBinding Converter="{StaticResource PageToVisibility}">
                             <Binding Source="Label" />
                             <Binding Path="CurrentPageNumber" />
                             <Binding Path="SearchPagesNumber" />
@@ -79,9 +97,9 @@
                     </Label.Visibility>
                 </Label>
                 <Button Grid.Column="2" Content="Next" Command="{Binding UpdateSearchPageNumberCommand}"
-                        CommandParameter="+">
+                        CommandParameter="+" IsEnabled="{Binding SearchIsNotLocked}">
                     <Button.Visibility>
-                        <MultiBinding Converter="{StaticResource PageVisibility}">
+                        <MultiBinding Converter="{StaticResource PageToVisibility}">
                             <Binding Source="Next" />
                             <Binding Path="CurrentPageNumber" />
                             <Binding Path="SearchPagesNumber" />
@@ -92,7 +110,6 @@
         </Grid>
         <!--Detailed View-->
         <v:SearchDetailedView
-            Visibility="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}"
-            d:IsHidden="True" />
+            Visibility="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}" />
     </Grid>
 </UserControl>

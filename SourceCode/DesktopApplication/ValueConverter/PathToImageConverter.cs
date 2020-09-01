@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using TvSeriesCalendar.UtilityClasses;
@@ -22,7 +23,7 @@ namespace TvSeriesCalendar.ValueConverter
                     image.CacheOption = BitmapCacheOption.OnLoad; // load the image from the stream
                     image.EndInit();
                 } // close the stream
-
+                image.Freeze();
                 return image;
             }
             catch (FileNotFoundException ex)
@@ -30,8 +31,6 @@ namespace TvSeriesCalendar.ValueConverter
                 Logger.Exception(ex, "PathToImageConverter");
                 return null;
             }
-
-            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

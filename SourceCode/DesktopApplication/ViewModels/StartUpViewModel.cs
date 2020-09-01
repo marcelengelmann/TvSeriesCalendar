@@ -37,10 +37,8 @@ namespace TvSeriesCalendar.ViewModels
                     if (_currentMainWindow != null)
                         _currentMainWindow.Visibility = Visibility.Visible;
                     _nextMainWindow = "main";
-                    ChangelogWindowView changelogWindow = new ChangelogWindowView
-                    {
-                        DataContext = new ChangelogWindowViewModel(),
-                    };
+                    ChangelogWindowView changelogWindow = new ChangelogWindowView();
+                    changelogWindow.DataContext = new ChangelogWindowViewModel();
                     changelogWindow.Topmost = true;
                     changelogWindow.Show();
                     break;
@@ -54,7 +52,6 @@ namespace TvSeriesCalendar.ViewModels
                 default:
                     throw new ArgumentException("Invalid number of Arguments!");
             }
-
             Task.Run(Updating).ContinueWith(e =>
             {
                 if(e.Result)
@@ -105,10 +102,8 @@ namespace TvSeriesCalendar.ViewModels
             _currentMainWindow = Application.Current.MainWindow;
             if (_nextMainWindow == "updater")
             {
-                Application.Current.MainWindow = new UpdaterView
-                {
-                    DataContext = new UpdaterViewModel(_seriesOnlineDataService, _seriesLocalDataService)
-                };
+                Application.Current.MainWindow = new UpdaterView();
+                Application.Current.MainWindow.DataContext = new UpdaterViewModel(_seriesOnlineDataService, _seriesLocalDataService);
             }
             else //main
             {

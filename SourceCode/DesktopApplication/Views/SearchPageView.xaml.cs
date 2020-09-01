@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace TvSeriesCalendar.Views
 {
@@ -10,11 +11,6 @@ namespace TvSeriesCalendar.Views
         public SearchView()
         {
             InitializeComponent();
-        }
-
-        private void SearchBox_TextChanged()
-        {
-
         }
     }
 }

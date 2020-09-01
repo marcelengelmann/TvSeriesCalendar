@@ -9,17 +9,16 @@ namespace TvSeriesCalendar
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         public App()
         {
-            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
-                Logger.Exception((Exception) e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException");
-
             DispatcherUnhandledException += (s, e) =>
             {
-                Logger.Exception(e.Exception, "Application.Current.DispatcherUnhandledException");
-                e.Handled = true;
+                string exceptionSource = "Application.Current.DispatcherUnhandledException";
+                Logger.Exception(e.Exception, exceptionSource);
+                CrashReportHandler.ReportCrash(e.Exception, exceptionSource);
             };
-        }    }
+        }
+    }
 }
