@@ -6,26 +6,34 @@
         xmlns:vm="clr-namespace:TvSeriesCalendar.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Icon="/TvSeriesCalendar;component/TvSeriesCalendar.ico" Height="800" Width="920" MinHeight="800" MinWidth="1000" ResizeMode="CanResizeWithGrip" WindowStyle="None" AllowsTransparency="True">
+        Icon="/TvSeriesCalendar;component/TvSeriesCalendar.ico" Height="800" Width="920" MinHeight="800"
+        MinWidth="1000" ResizeMode="CanResizeWithGrip" WindowStyle="None" AllowsTransparency="True">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="30"/>
+        <WindowChrome CaptionHeight="30" />
     </WindowChrome.WindowChrome>
     <Grid Background="#303030">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="20" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <!-- TitleBar -->
-        <Grid Grid.Row="0" x:Name="titlebar" >
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}">
-                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Foreground="White" BorderBrush="{x:Null}" Background="{x:Null}" Command="{Binding MinimizeApplicationCommand}"  WindowChrome.IsHitTestVisibleInChrome="True">
-                    <materialDesign:PackIcon Kind="WindowMinimize"></materialDesign:PackIcon>
+        <Grid Grid.Row="0" x:Name="titlebar">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Background="{x:Null}">
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30"
+                        Foreground="White" BorderBrush="{x:Null}" Background="{x:Null}"
+                        Command="{Binding MinimizeApplicationCommand}" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <materialDesign:PackIcon Kind="WindowMinimize" />
                 </Button>
-                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Foreground="White" BorderBrush="{x:Null}" Background="{x:Null}" Command="{Binding MaximizeApplicationCommand}"  WindowChrome.IsHitTestVisibleInChrome="True">
-                    <materialDesign:PackIcon Kind="{Binding MaximizeRestorePackIcon}"></materialDesign:PackIcon>
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30"
+                        Foreground="White" BorderBrush="{x:Null}" Background="{x:Null}"
+                        Command="{Binding MaximizeApplicationCommand}" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <materialDesign:PackIcon Kind="{Binding MaximizeRestorePackIcon}" />
                 </Button>
-                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Foreground="White" BorderBrush="{x:Null}" Background="{x:Null}" Command="{Binding CloseApplicationCommand}"  WindowChrome.IsHitTestVisibleInChrome="True">
-                    <materialDesign:PackIcon Kind="WindowClose"></materialDesign:PackIcon>
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30"
+                        Foreground="White" BorderBrush="{x:Null}" Background="{x:Null}"
+                        Command="{Binding CloseApplicationCommand}" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <materialDesign:PackIcon Kind="WindowClose" />
                 </Button>
             </StackPanel>
         </Grid>
@@ -34,32 +42,34 @@
 
             <Grid DockPanel.Dock="Top" Height="60">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition  Width="100"/>
+                    <ColumnDefinition Width="100" />
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico" Margin="0 0 0 5"/>
+                <Image Grid.Column="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico" Margin="0 0 0 5" />
                 <Button Grid.Column="1" Content="Series" Style="{StaticResource NavigationButton}"
-                        Command="{Binding ChangeViewToSeriesCommand}" IsDefault="{Binding CurrentView, Converter={StaticResource NavigationCurrentViewToDefault}, ConverterParameter=Series}"/>
+                        Command="{Binding ChangeViewToSeriesCommand}"
+                        IsDefault="{Binding CurrentView, Converter={StaticResource NavigationCurrentViewToDefault}, ConverterParameter=Series}" />
                 <Button Grid.Column="2" Content="Search" Style="{StaticResource NavigationButton}"
-                        Command="{Binding ChangeViewToSearchCommand}" IsDefault="{Binding CurrentView, Converter={StaticResource NavigationCurrentViewToDefault}, ConverterParameter=Search}"/>
+                        Command="{Binding ChangeViewToSearchCommand}"
+                        IsDefault="{Binding CurrentView, Converter={StaticResource NavigationCurrentViewToDefault}, ConverterParameter=Search}" />
                 <Button Grid.Column="3" Content="Settings" Style="{StaticResource NavigationButton}"
-                        Command="{Binding ChangeViewToSettingsCommand}" IsDefault="{Binding CurrentView, Converter={StaticResource NavigationCurrentViewToDefault}, ConverterParameter=Settings}"/>
+                        Command="{Binding ChangeViewToSettingsCommand}"
+                        IsDefault="{Binding CurrentView, Converter={StaticResource NavigationCurrentViewToDefault}, ConverterParameter=Settings}" />
                 <Button Grid.Column="4" Content="About" Style="{StaticResource NavigationButton}"
-                        Command="{Binding ChangeViewToAboutCommand}" IsDefault="{Binding CurrentView, Converter={StaticResource NavigationCurrentViewToDefault}, ConverterParameter=About}"/>
+                        Command="{Binding ChangeViewToAboutCommand}"
+                        IsDefault="{Binding CurrentView, Converter={StaticResource NavigationCurrentViewToDefault}, ConverterParameter=About}" />
             </Grid>
             <!-- Content -->
             <Grid DockPanel.Dock="Bottom" Background="#101010" ClipToBounds="True">
-                    <Border BorderBrush="Black" BorderThickness="3 3 3 3" Margin="-2" ClipToBounds="True">
-                        <Border.Effect>
-                            <DropShadowEffect ShadowDepth="0" BlurRadius="8"/>
-                        </Border.Effect>
-                    </Border>
-                <ContentControl Content="{Binding CurrentView}">
-                   
-                </ContentControl>
+                <Border BorderBrush="Black" BorderThickness="3 3 3 3" Margin="-2" ClipToBounds="True">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="8" />
+                    </Border.Effect>
+                </Border>
+                <ContentControl Content="{Binding CurrentView}" />
             </Grid>
         </DockPanel>
     </Grid>

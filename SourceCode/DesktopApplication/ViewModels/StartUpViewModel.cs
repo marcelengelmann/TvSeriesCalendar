@@ -11,8 +11,8 @@ namespace TvSeriesCalendar.ViewModels
 {
     public class StartUpViewModel : ObservableObject
     {
-        private readonly SeriesLocalDataService _seriesLocalDataService;
         private readonly string _nextMainWindow;
+        private readonly SeriesLocalDataService _seriesLocalDataService;
         private readonly SeriesOnlineDataService _seriesOnlineDataService;
         private Window _currentMainWindow;
         private int _downloadProgress;
@@ -54,9 +54,10 @@ namespace TvSeriesCalendar.ViewModels
                 default:
                     throw new ArgumentException("Invalid number of Arguments!");
             }
+
             Task.Run(Updating).ContinueWith(e =>
             {
-                if(e.Result)
+                if (e.Result)
                     Application.Current.Dispatcher.Invoke(ConfigLoaded);
             });
         }
@@ -98,8 +99,10 @@ namespace TvSeriesCalendar.ViewModels
                     CrashReportHandler.ReportCrash(ex, "StartUpViewModel.Updating");
                     Environment.Exit(1);
                 }
+
                 return false;
             }
+
             StatusText = "Updating Tv Series";
             await _seriesOnlineDataService.FetchTMDbConfig();
             await TvSeriesUpdater.Update(_seriesLocalDataService, _seriesOnlineDataService, SeriesUpdateProgress);
@@ -112,7 +115,8 @@ namespace TvSeriesCalendar.ViewModels
             if (_nextMainWindow == "updater")
             {
                 Application.Current.MainWindow = new UpdaterView();
-                Application.Current.MainWindow.DataContext = new UpdaterViewModel(_seriesOnlineDataService, _seriesLocalDataService);
+                Application.Current.MainWindow.DataContext =
+                    new UpdaterViewModel(_seriesOnlineDataService, _seriesLocalDataService);
             }
             else //main
             {
@@ -130,7 +134,7 @@ namespace TvSeriesCalendar.ViewModels
             try
             {
                 if (Directory.Exists("update")) Directory.Delete("update", true);
-                if (File.Exists("update.vbs"))  File.Delete("update.vbs");
+                if (File.Exists("update.vbs")) File.Delete("update.vbs");
             }
             catch (Exception ex)
             {
@@ -150,10 +154,11 @@ namespace TvSeriesCalendar.ViewModels
         private void DownloadProgressUpdate(object sender, DownloadProgressChangedEventArgs e)
         {
             DownloadProgress = e.ProgressPercentage;
-            UpdateProgressText = $"{BytesToHumanReadable(e.BytesReceived)} / {BytesToHumanReadable(e.TotalBytesToReceive)}   {e.UserState}";
+            UpdateProgressText =
+                $"{BytesToHumanReadable(e.BytesReceived)} / {BytesToHumanReadable(e.TotalBytesToReceive)}   {e.UserState}";
         }
 
-        private string BytesToHumanReadable(double bytes)
+        private static string BytesToHumanReadable(double bytes)
         {
             string[] suffixes = {" B", " KB", " MB"};
             int suffixIndex = 0;
@@ -164,7 +169,6 @@ namespace TvSeriesCalendar.ViewModels
             }
 
             return Math.Round(bytes, 2) + suffixes[suffixIndex];
-
         }
 
         private void SeriesUpdateProgress(int progressPercentage, int total, int current)

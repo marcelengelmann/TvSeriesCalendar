@@ -7,7 +7,6 @@
         xmlns:wpf="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
         mc:Ignorable="d"
         Title="TvSeriesCalender-Changelog" Height="600" Width="500"
-        ResizeMode="NoResize"
-        >
-        <wpf:HtmlPanel Text="{Binding MarkdownText}" Margin="10 0"/>
+        ResizeMode="NoResize">
+    <wpf:HtmlPanel Text="{Binding MarkdownText}" Margin="10 0" />
 </Window>

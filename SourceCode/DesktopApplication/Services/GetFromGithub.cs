@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using TvSeriesCalendar.UtilityClasses;
 
@@ -26,7 +23,8 @@ namespace TvSeriesCalendar.Services
             }
         }
 
-        internal static async Task DownloadFileAsync(string url, DownloadProgressChangedEventHandler progressUpdate = null)
+        internal static async Task DownloadFileAsync(string url,
+            DownloadProgressChangedEventHandler progressUpdate = null)
         {
             using (WebClient wc = new WebClient())
             {

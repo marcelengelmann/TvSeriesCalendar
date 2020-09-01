@@ -15,10 +15,10 @@ namespace TvSeriesCalendar.ViewModels
     {
         private AboutViewModel _aboutVm;
         private object _currentView;
+        private PackIconKind _maximizeRestorePackIcon = PackIconKind.WindowMaximize;
         private SearchViewModel _searchVm;
         private SeriesViewModel _seriesVm;
         private SettingsViewModel _settingsVm;
-        private PackIconKind _maximizeRestorePackIcon = PackIconKind.WindowMaximize;
 
         public MainWindowViewModel(SeriesOnlineDataService onlineDataService, SeriesLocalDataService localDataService)
         {
@@ -110,11 +110,13 @@ namespace TvSeriesCalendar.ViewModels
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             Application.Current.Shutdown();
         }
-        
+
         private void MaximizeRestoreApplication()
         {
-            if (Application.Current.MainWindow != null){
-                if(Application.Current.MainWindow.WindowState == WindowState.Maximized){
+            if (Application.Current.MainWindow != null)
+            {
+                if (Application.Current.MainWindow.WindowState == WindowState.Maximized)
+                {
                     MaximizeRestorePackIcon = PackIconKind.WindowMaximize;
                     Application.Current.MainWindow.WindowState = WindowState.Normal;
                 }
@@ -125,7 +127,7 @@ namespace TvSeriesCalendar.ViewModels
                 }
             }
         }
-        
+
         private void MinimizeApplication()
         {
             if (Application.Current.MainWindow != null)
@@ -137,14 +139,10 @@ namespace TvSeriesCalendar.ViewModels
             IEnumerable<string> seriesImages = new List<TvSeries>(SeriesVm.Series).Select(x => x.ImagePath);
             string[] allImages = Directory.GetFiles("images/");
             foreach (string t in allImages)
-            {
                 if (seriesImages.Contains(t) == false)
-                {
                     File.Delete(t);
-                }
-            }
 
-            if(File.Exists("error.txt"))
+            if (File.Exists("error.txt"))
                 File.Delete("error.txt");
         }
     }

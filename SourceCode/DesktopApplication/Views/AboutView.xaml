@@ -18,21 +18,25 @@
             <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico"/>
-        <TextBlock Grid.Row="1" Text="TvSeriesCalendar" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="30" Foreground="White"></TextBlock>
+        <Image Grid.Row="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico" />
+        <TextBlock Grid.Row="1" Text="TvSeriesCalendar" VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontWeight="Bold" FontSize="30" Foreground="White" />
         <TextBlock Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
-            <Hyperlink Command="{Binding OpenWebsiteCommand}" CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar">
+            <Hyperlink Command="{Binding OpenWebsiteCommand}"
+                       CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar">
                 Find more Information about the Project
             </Hyperlink>
         </TextBlock>
         <TextBlock Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
-            <Hyperlink Command="{Binding OpenWebsiteCommand}" CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar/blob/master/LICENSE">
+            <Hyperlink Command="{Binding OpenWebsiteCommand}"
+                       CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar/blob/master/LICENSE">
                 License
             </Hyperlink>
 
         </TextBlock>
         <TextBlock Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
-            <Hyperlink Command="{Binding OpenWebsiteCommand}" CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar/blob/master/SourceCode/DesktopApplication/ThirdPartyNotices.md">
+            <Hyperlink Command="{Binding OpenWebsiteCommand}"
+                       CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar/blob/master/SourceCode/DesktopApplication/ThirdPartyNotices.md">
                 Third Party Notice
             </Hyperlink>
 

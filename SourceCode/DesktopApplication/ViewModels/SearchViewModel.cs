@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using TvSeriesCalendar.Models;
 using TvSeriesCalendar.Services;
@@ -16,16 +13,16 @@ namespace TvSeriesCalendar.ViewModels
     {
         private readonly SeriesLocalDataService _seriesLocalDataService;
         private readonly SeriesOnlineDataService _seriesOnlineDataService;
+        private CancellationTokenSource _cancelSearchSuggestionToken;
         private int _currentPageNumber;
+        private bool _searchIsNotNotLocked;
         private int _searchPagesNumber;
+        private ObservableCollection<string> _searchSuggestions;
         private string _searchText;
         private TvSeries _selectedTvSeries;
         private bool _showDetailedView;
         private bool _showSearchLabel;
         private int _watchedSeasonsCounter;
-        private bool _searchIsNotNotLocked;
-        private CancellationTokenSource _cancelSearchSuggestionToken;
-        private ObservableCollection<string> _searchSuggestions;
 
         public SearchViewModel(SeriesLocalDataService dataService, SeriesOnlineDataService TMDbId)
         {
@@ -41,7 +38,6 @@ namespace TvSeriesCalendar.ViewModels
             SearchIsNotLocked = true;
             _cancelSearchSuggestionToken = new CancellationTokenSource();
             _searchSuggestions = new ObservableCollection<string>();
-
         }
 
         public ICommand StartNewSearchCommand { get; }
@@ -75,13 +71,17 @@ namespace TvSeriesCalendar.ViewModels
                 if (value.Length == 0)
                     ShowSearchLabel = true;
                 if (SearchSeries?.Count > 0)
-                    SearchSeries.Clear(); 
+                    SearchSeries.Clear();
                 if (value.Length > 0)
                 {
                     _cancelSearchSuggestionToken?.Cancel();
                     _cancelSearchSuggestionToken = new CancellationTokenSource();
-                    Task.Run(async () => SearchSuggestions = await _seriesOnlineDataService.GetSearchSuggestions(value, _cancelSearchSuggestionToken.Token));
+                    Task.Run(async () =>
+                        SearchSuggestions =
+                            await _seriesOnlineDataService.GetSearchSuggestions(value,
+                                _cancelSearchSuggestionToken.Token));
                 }
+
                 if (SearchPagesNumber > 0)
                     SearchPagesNumber = 0;
                 if (CurrentPageNumber > 0)
@@ -150,7 +150,8 @@ namespace TvSeriesCalendar.ViewModels
             SearchIsNotLocked = false;
 
             SearchSeries?.Clear();
-            SearchPagesNumber = await _seriesOnlineDataService.SearchForSeries(SearchText, CurrentPageNumber, SearchSeries);
+            SearchPagesNumber =
+                await _seriesOnlineDataService.SearchForSeries(SearchText, CurrentPageNumber, SearchSeries);
 
             SearchIsNotLocked = true;
         }

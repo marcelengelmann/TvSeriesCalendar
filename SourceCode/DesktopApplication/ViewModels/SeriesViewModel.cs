@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using TvSeriesCalendar.Models;
 using TvSeriesCalendar.Services;
 using TvSeriesCalendar.UtilityClasses;
-using System.Linq;
-using MaterialDesignThemes.Wpf;
 
 namespace TvSeriesCalendar.ViewModels
 {
@@ -15,16 +15,16 @@ namespace TvSeriesCalendar.ViewModels
     {
         private readonly SeriesLocalDataService _seriesLocalDataService;
         private readonly SeriesOnlineDataService _seriesOnlineDataService;
+        private string _activeSortFunction;
+        private string _filterByNameText;
+        private ObservableCollection<TvSeries> _filteredSeries;
         private TvSeries _selectedTvSeries;
         private bool _showDetailedView;
-        private int _watchedSeasonsCounter;
-        private string _filterByNameText;
-        private PackIconKind _sortByNamePackIconKind;
-        private PackIconKind _sortByStatusPackIconKind;
-        private PackIconKind _sortByReleaseDatePackIconKind;
         private PackIconKind _sortByAddedOrderPackIconKind;
-        private ObservableCollection<TvSeries> _filteredSeries;
-        private string _activeSortFunction;
+        private PackIconKind _sortByNamePackIconKind;
+        private PackIconKind _sortByReleaseDatePackIconKind;
+        private PackIconKind _sortByStatusPackIconKind;
+        private int _watchedSeasonsCounter;
 
 
         public SeriesViewModel(SeriesLocalDataService localDataService, SeriesOnlineDataService onlineDataService)
@@ -68,10 +68,7 @@ namespace TvSeriesCalendar.ViewModels
             get => _selectedTvSeries;
             set
             {
-                if (_showDetailedView && value != null)
-                {
-                    return;
-                }
+                if (_showDetailedView && value != null) return;
 
                 if (value != null)
                 {
@@ -86,7 +83,7 @@ namespace TvSeriesCalendar.ViewModels
 
         public ObservableCollection<TvSeries> FilteredSeries
         {
-            get => _filteredSeries; 
+            get => _filteredSeries;
             set => OnPropertyChanged(ref _filteredSeries, value);
         }
 
@@ -201,10 +198,7 @@ namespace TvSeriesCalendar.ViewModels
             if (e.Action != NotifyCollectionChangedAction.Add && e.Action != NotifyCollectionChangedAction.Remove)
                 return;
             FilteredSeries = new ObservableCollection<TvSeries>(Series);
-            if (FilterByNameText?.Length > 0)
-            {
-                FilterByName();
-            }
+            if (FilterByNameText?.Length > 0) FilterByName();
             switch (ActiveSortFunction)
             {
                 case "SortByName":
@@ -227,19 +221,11 @@ namespace TvSeriesCalendar.ViewModels
         {
             FilteredSeries.Clear();
             if (FilterByNameText.Length == 0)
-            {
                 FilteredSeries = new ObservableCollection<TvSeries>(Series);
-            }
             else
-            {
                 foreach (TvSeries series in Series)
-                {
                     if (series.Name.ToLower().Contains(FilterByNameText.ToLower()))
-                    {
                         FilteredSeries.Add(series);
-                    }
-                }
-            }
         }
 
         public void SortByName()
@@ -250,10 +236,11 @@ namespace TvSeriesCalendar.ViewModels
                 FilteredSeries = new ObservableCollection<TvSeries>(Series.OrderByDescending(series => series.Name));
             }
             else
-            {    
+            {
                 SortByNamePackIconKind = PackIconKind.SortAlphabeticalAscending;
                 FilteredSeries = new ObservableCollection<TvSeries>(Series.OrderBy(series => series.Name));
             }
+
             ActiveSortFunction = "SortByName";
         }
 
@@ -269,6 +256,7 @@ namespace TvSeriesCalendar.ViewModels
                 SortByStatusPackIconKind = PackIconKind.CheckBold;
                 FilteredSeries = new ObservableCollection<TvSeries>(Series.OrderByDescending(OrderSeriesStatus));
             }
+
             ActiveSortFunction = "SortByStatus";
         }
 
@@ -283,7 +271,8 @@ namespace TvSeriesCalendar.ViewModels
 
         private void SortByReleaseDate()
         {
-            if (SortByReleaseDatePackIconKind == PackIconKind.CalendarImport && ActiveSortFunction == "SortByReleaseDate")
+            if (SortByReleaseDatePackIconKind == PackIconKind.CalendarImport &&
+                ActiveSortFunction == "SortByReleaseDate")
             {
                 SortByReleaseDatePackIconKind = PackIconKind.CalendarExport;
                 FilteredSeries = new ObservableCollection<TvSeries>(Series.OrderByDescending(OrderByReleaseDate));
@@ -293,18 +282,15 @@ namespace TvSeriesCalendar.ViewModels
                 SortByReleaseDatePackIconKind = PackIconKind.CalendarImport;
                 FilteredSeries = new ObservableCollection<TvSeries>(Series.OrderBy(OrderByReleaseDate));
             }
-            ActiveSortFunction = "SortByReleaseDate";
 
+            ActiveSortFunction = "SortByReleaseDate";
         }
 
         private DateTime? OrderByReleaseDate(TvSeries series)
         {
             if (series.NextSeasonReleaseDate != null)
                 return series.NextSeasonReleaseDate;
-            if (SortByReleaseDatePackIconKind == PackIconKind.CalendarImport)
-            {
-                return new DateTime(9999, 10, 10);
-            }
+            if (SortByReleaseDatePackIconKind == PackIconKind.CalendarImport) return new DateTime(9999, 10, 10);
 
             return null;
         }

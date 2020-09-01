@@ -11,9 +11,8 @@ namespace TvSeriesCalendar.ViewModels
 {
     public class UpdaterViewModel : ObservableObject
     {
-        private readonly SeriesLocalDataService _seriesLocalDataService;
-
         private readonly Window _mainWindow;
+        private readonly SeriesLocalDataService _seriesLocalDataService;
         private readonly SeriesOnlineDataService _seriesOnlineDataService;
         private string _newReleaseDateText = "";
         private List<TvSeries> _todayReleasedSeasonSeries;
@@ -67,7 +66,8 @@ namespace TvSeriesCalendar.ViewModels
             if (current != null)
                 current.Visibility = Visibility.Hidden;
             Application.Current.MainWindow = new MainWindowView();
-            Application.Current.MainWindow.DataContext = new MainWindowViewModel(_seriesOnlineDataService, _seriesLocalDataService);
+            Application.Current.MainWindow.DataContext =
+                new MainWindowViewModel(_seriesOnlineDataService, _seriesLocalDataService);
             Application.Current.MainWindow.Show();
             current?.Close();
         }

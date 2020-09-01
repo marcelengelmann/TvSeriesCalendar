@@ -30,13 +30,13 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBox   Grid.Column="1" Background="Black" VerticalAlignment="Center"
-                          materialDesign:HintAssist.Hint="Search for Series..."
-                          materialDesign:HintAssist.HintOpacity="0.7" Foreground="White"
-                          Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          IsEnabled="{Binding SearchIsNotLocked}"
-                          behaviors:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding SearchSuggestions}"
-                          behaviors:AutoCompleteBehavior.AutoCompleteStringComparison="CurrentCultureIgnoreCase">
+                <TextBox Grid.Column="1" Background="Black" VerticalAlignment="Center"
+                         materialDesign:HintAssist.Hint="Search for Series..."
+                         materialDesign:HintAssist.HintOpacity="0.7" Foreground="White"
+                         Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{Binding SearchIsNotLocked}"
+                         behaviors:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding SearchSuggestions}"
+                         behaviors:AutoCompleteBehavior.AutoCompleteStringComparison="CurrentCultureIgnoreCase">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding StartNewSearchCommand}" />
                     </TextBox.InputBindings>

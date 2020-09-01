@@ -22,10 +22,13 @@
                 <RowDefinition Height="20" />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico"/>
-            <TextBlock Grid.Row="1" Text="{Binding StatusText}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="14"  Foreground="{DynamicResource MaterialDesignDarkForeground}"/>
-            <TextBlock Grid.Row="2" Text="{Binding UpdateProgressText}"  HorizontalAlignment="Center" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource MaterialDesignDarkForeground}"/>
-            <ProgressBar Grid.Row="3" Value="{Binding DownloadProgress}"/>
+            <Image Grid.Row="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico" />
+            <TextBlock Grid.Row="1" Text="{Binding StatusText}" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                       FontWeight="Bold" FontSize="14" Foreground="{DynamicResource MaterialDesignDarkForeground}" />
+            <TextBlock Grid.Row="2" Text="{Binding UpdateProgressText}" HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom" FontWeight="Bold" FontSize="12"
+                       Foreground="{DynamicResource MaterialDesignDarkForeground}" />
+            <ProgressBar Grid.Row="3" Value="{Binding DownloadProgress}" />
         </Grid>
     </Border>
 </Window>

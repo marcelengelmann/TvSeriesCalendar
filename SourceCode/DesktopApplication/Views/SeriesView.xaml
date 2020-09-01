@@ -96,7 +96,7 @@
                                     <BlurEffect Radius="6" RenderingBias="Quality" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter Property="Opacity" Value="0.5"></Setter>
+                            <Setter Property="Opacity" Value="0.5" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -104,7 +104,7 @@
         </Grid>
         <Grid>
             <v:SeriesDetailedView
-                Visibility="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}"/>
+                Visibility="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}" />
         </Grid>
     </Grid>
 </UserControl>

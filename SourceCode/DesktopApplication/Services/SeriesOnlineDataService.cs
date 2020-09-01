@@ -77,7 +77,8 @@ namespace TvSeriesCalendar.Services
             series.ImagePath = savePath;
         }
 
-        public async Task<ObservableCollection<string>> GetSearchSuggestions(string searchText, CancellationToken cancellationToken)
+        public async Task<ObservableCollection<string>> GetSearchSuggestions(string searchText,
+            CancellationToken cancellationToken)
         {
             List<SearchTv> result = await _client.GetSearchSuggestions(searchText, cancellationToken);
             return new ObservableCollection<string>(result.ConvertAll(item => item.Name));

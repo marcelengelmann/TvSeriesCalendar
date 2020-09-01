@@ -6,9 +6,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
 using Newtonsoft.Json;
-using TvSeriesCalendar.Properties;
 using TvSeriesCalendar.UtilityClasses;
 
 // ReSharper disable InconsistentNaming

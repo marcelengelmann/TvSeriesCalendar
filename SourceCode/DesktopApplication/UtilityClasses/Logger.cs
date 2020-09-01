@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 
 namespace TvSeriesCalendar.UtilityClasses
 {
@@ -23,7 +22,6 @@ namespace TvSeriesCalendar.UtilityClasses
                    $"Source : {source}\n" +
                    $"Message: {exception.Message}\n" +
                    $"StackTrace : {exception.StackTrace}\n";
-
         }
     }
 }
