@@ -4,15 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TvSeriesCalendar.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="200" Width="400"
+        Title="MainWindow" Height="250" Width="400"
         ShowInTaskbar="False"
         ResizeMode="NoResize"
         WindowStyle="None">
-    <Grid Background="#404040">
+    <Grid Background="#303030">
         <Grid.RowDefinitions>
-            <RowDefinition Height="25" />
+            <RowDefinition Height="30" />
             <RowDefinition />
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <!--TitleBar-->
         <Grid Grid.Row="0">
@@ -20,31 +22,45 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="TvSeriesCalendar" FontSize="16" HorizontalAlignment="Left"
+            <Image Source="../Resources/TvSeriesCalendar.ico" HorizontalAlignment="Left"></Image>
+            <TextBlock Grid.Column="0" Text="TvSeriesCalendar" FontSize="16" HorizontalAlignment="Center"
                        VerticalAlignment="Top" Foreground="White" />
-            <Button Grid.Column="1" Content="X" Command="{Binding CloseWindowCommand}" Foreground="White"
-                    Background="#404040" BorderThickness="1" BorderBrush="White" />
-            <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0 0 0 1" BorderBrush="White" />
+            <!-- Close Button -->
+            <Button Grid.Column="1" HorizontalAlignment="Center"
+                    VerticalAlignment="Top" Command="{Binding CloseWindowCommand}" Background="Transparent" BorderThickness="0" Padding="0" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Style="{DynamicResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Kind="Close">
+                    <materialDesign:PackIcon.LayoutTransform>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"></ScaleTransform>
+                    </materialDesign:PackIcon.LayoutTransform>
+                </materialDesign:PackIcon>
+            </Button>
         </Grid>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition Height="25" />
-            </Grid.RowDefinitions>
+        <!-- Content -->
+        <Border Grid.Row="1" BorderThickness="2" BorderBrush="Black">
+            <Border BorderThickness="2" Margin="-2" BorderBrush="Black">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="8" Color="Black" RenderingBias="Quality" ShadowDepth="0"></DropShadowEffect>
+                </Border.Effect>
+            </Border>
+        </Border>
+        <ScrollViewer Grid.Row="1" Margin="0 0 0 5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock  Text="{Binding TodayReleaseText}" FontSize="14"
+                           Foreground="Green" Margin="2" />
+                <TextBlock Text="{Binding NewReleaseDateText}" FontSize="14"
+                           Foreground="White" Margin="2" />
+            </StackPanel>
+        </ScrollViewer>
+        <!-- Action Buttons -->
+        <Grid Grid.Row="2" Margin="0 5 0 5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding NewReleaseDateText}" FontSize="14"
-                       Foreground="White" Margin="5" />
-            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding TodayReleaseText}" FontSize="14"
-                       Foreground="Green" Margin="5" />
-            <Button Grid.Row="2" Grid.Column="0" Width="100" Background="#404040" BorderBrush="White"
+            <Button  Grid.Column="0" Width="100"  VerticalAlignment="Center"
                     Foreground="White" Content="Open" Command="{Binding OpenMainProgramCommand}" />
-            <Button Grid.Row="2" Grid.Column="1" Width="100" Background="#404040" BorderBrush="White"
+            <Button  Grid.Column="1" Width="100" VerticalAlignment="Center"
                     Foreground="White" Content="Close" Command="{Binding CloseWindowCommand}" />
-            <Border Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="0 1 0 0" BorderBrush="White" />
         </Grid>
     </Grid>
 </Window>
