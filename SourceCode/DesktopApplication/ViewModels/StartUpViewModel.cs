@@ -108,7 +108,6 @@ namespace TvSeriesCalendar.ViewModels
 
         private void ConfigLoaded()
         {
-            return;
             _currentMainWindow = Application.Current.MainWindow;
             if (_nextMainWindow == "updater")
             {
