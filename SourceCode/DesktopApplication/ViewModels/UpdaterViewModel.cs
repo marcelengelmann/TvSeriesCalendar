@@ -27,6 +27,7 @@ namespace TvSeriesCalendar.ViewModels
             {
                 _mainWindow.Visibility = Visibility.Hidden;
                 _mainWindow.Loaded += MainWindow_Loaded;
+                _mainWindow.Topmost = true;
             }
 
             _seriesOnlineDataService = onlineDataService;

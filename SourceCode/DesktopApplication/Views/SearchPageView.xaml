@@ -107,6 +107,22 @@
                     </Button.Visibility>
                 </Button>
             </Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger
+                            Binding="{Binding SelectedSeries, Converter={StaticResource SelectedSeriesToVisibility}}"
+                            Value="Visible">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <BlurEffect Radius="6" RenderingBias="Quality" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Opacity" Value="0.5" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
         </Grid>
         <!--Detailed View-->
         <v:SearchDetailedView

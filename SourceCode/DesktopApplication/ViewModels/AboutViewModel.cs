@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Input;
 using TvSeriesCalendar.UtilityClasses;
 
@@ -13,6 +14,16 @@ namespace TvSeriesCalendar.ViewModels
         }
 
         public ICommand OpenWebsiteCommand { get; }
+
+        public string VersionText
+        {
+            get
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fvi.FileVersion;
+            }
+        }
 
         private static void OpenWebsite(string url)
         {

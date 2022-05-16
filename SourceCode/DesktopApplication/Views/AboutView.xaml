@@ -8,20 +8,23 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="100" />
             <RowDefinition Height="40" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60" />
             <RowDefinition />
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico" />
+        <Image Grid.Row="0" Source="pack://application:,,,/Resources/TvSeriesCalendar.ico" Margin="0 10 0 0"/>
         <TextBlock Grid.Row="1" Text="TvSeriesCalendar" VerticalAlignment="Center" HorizontalAlignment="Center"
                    FontWeight="Bold" FontSize="30" Foreground="White" />
-        <TextBlock Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
+        <TextBlock Grid.Row="2" Text="{Binding VersionText}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontWeight="Normal" FontSize="16" Foreground="White"/>
+
+        <TextBlock Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
             <Hyperlink Command="{Binding OpenWebsiteCommand}"
                        CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar">
                 Find more Information about the Project
@@ -34,12 +37,19 @@
             </Hyperlink>
 
         </TextBlock>
-        <TextBlock Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
+        <TextBlock Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
             <Hyperlink Command="{Binding OpenWebsiteCommand}"
                        CommandParameter="https://github.com/Death-Truction/TvSeriesCalendar/blob/master/SourceCode/DesktopApplication/ThirdPartyNotices.md">
                 Third Party Notice
             </Hyperlink>
+        </TextBlock>
 
+        <TextBlock Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Foreground="White">
+            Created by
+            <Hyperlink Command="{Binding OpenWebsiteCommand}"
+                       CommandParameter="https://github.com/Death-Truction">
+                DeathTruction
+            </Hyperlink>
         </TextBlock>
     </Grid>
 </UserControl>

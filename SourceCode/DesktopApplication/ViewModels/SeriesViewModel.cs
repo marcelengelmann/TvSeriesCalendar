@@ -262,7 +262,7 @@ namespace TvSeriesCalendar.ViewModels
 
         private int OrderSeriesStatus(TvSeries series)
         {
-            if (series.Status == "Canceled" || series.Status == "Ended")
+            if ((series.Status == "Canceled" || series.Status == "Ended") && series.WatchedSeasons == series.NumberReleasedSeasons)
                 return 0;
             if (series.NextSeasonReleaseDate == null)
                 return 1;
